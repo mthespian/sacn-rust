@@ -1,0 +1,148 @@
+name: CI
+on: [push, pull_request]
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+  CI: true
+
+permissions:
+  contents: read #  to fetch code (actions/checkout)
+
+jobs:
+  Test:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest", "windows-latest"]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: stable
+    - name: Install Cargo-hack
+      run: cargo install --debug cargo-hack
+    - name: Check all features
+      run: cargo hack check --feature-powerset
+    - name: Tests
+      run: cargo test --all-features
+    - name: Tests release build
+      run: cargo test --release --all-features
+  MinimalVersions:
+    name: Minimal Versions
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest", "windows-latest"]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: nightly
+    - uses: taiki-e/install-action@cargo-hack
+    - uses: taiki-e/install-action@cargo-minimal-versions
+    - name: Tests
+      run: cargo test --all-features
+  MSRV:
+    name: Minimum Supported Rust Version
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: 1.52.0
+    - name: Check
+      # We only run check allowing us to use newer features in tests.
+      run: cargo check --all-features
+  Nightly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: nightly
+    - name: Tests
+      run: cargo test --all-features
+  Clippy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: stable
+        components: clippy
+    - name: Clippy
+      run: cargo clippy --all-targets --all-features -- -D warnings -A clippy::cognitive-complexity
+  Docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: stable
+    - name: Check docs
+      run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
+  Rustfmt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: stable
+        components: rustfmt
+    - name: Check formatting
+      # FIXME: for some reason this doesn't actually check all files.
+      # So instead we run `rustfmt` directly on each file.
+      #cargo fmt --all -- --check
+      run: find src tests examples -type f -iname "*.rs" | xargs rustfmt --check
+  RustfmtB:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: stable
+        components: rustfmt
+    - name: Check formatting
+      # FIXME: for some reason this doesn't actually check all files.
+      # So instead we run `rustfmt` directly on each file.
+      #
+      run: cargo fmt --all -- --check
+  CargoDeny:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        checks:
+          - advisories
+          - bans licenses sources
+    # Prevent sudden announcement of a new advisory from failing ci:
+    continue-on-error: ${{ matrix.checks == 'advisories' }}
+    steps:
+    - uses: actions/checkout@v3
+    - uses: EmbarkStudios/cargo-deny-action@v1
+      with:
+        command: check ${{ matrix.checks }}
+  # Single job required to merge the pr.
+  Passed:
+    runs-on: ubuntu-latest
+    needs:
+      - Test
+      - MinimalVersions
+      - MSRV
+      - Nightly
+      - Clippy
+      - Docs
+      - Rustfmt
+      - RustfmtB
+      - CargoDeny
+    steps:
+      - run: exit 0
