@@ -2659,7 +2659,11 @@ mod test {
                 assert!(false, "Receiver incorrectly accepted third data packet");
             }
             Err(e) => {
-                assert!(false, "Receiver correctly rejected third data packet but with unexpected error: {}", e);
+                assert!(
+                    false,
+                    "Receiver correctly rejected third data packet but with unexpected error: {}",
+                    e
+                );
             }
         }
     }
@@ -2937,7 +2941,11 @@ mod test {
                 assert!(false, "Receiver incorrectly accepted third sync packet");
             }
             Err(e) => {
-                assert!(false, "Receiver correctly rejected third sync packet but with unexpected error: {}", e);
+                assert!(
+                    false,
+                    "Receiver correctly rejected third sync packet but with unexpected error: {}",
+                    e
+                );
             }
         }
     }

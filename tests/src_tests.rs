@@ -343,11 +343,7 @@ fn test_send_without_registering() {
         }
         Err(e) => match e.kind() {
             &ErrorKind::UniverseNotRegistered(ref _s) => assert!(true),
-            _ => assert!(
-                false,
-                "Unexpected error type returned, {}",
-                e.kind()
-            ),
+            _ => assert!(false, "Unexpected error type returned, {}", e.kind()),
         },
     }
 }
@@ -476,7 +472,11 @@ fn test_register_discovery_universe() {
     let mut src = SacnSource::new_v4("Controller").unwrap();
     match src.register_universes(&[E131_DISCOVERY_UNIVERSE]) {
         Err(e) => {
-            assert!(false, "Unexpected error returned when attempting to register discovery universe, {:?}", e);
+            assert!(
+                false,
+                "Unexpected error returned when attempting to register discovery universe, {:?}",
+                e
+            );
         }
         _ => {
             assert!(true, "Registration successful");

@@ -3086,11 +3086,7 @@ fn test_source_1_universe_timeout() {
             }
         },
         Ok(x) => {
-            assert!(
-                false,
-                "Data received unexpectedly as none sent! {:?}",
-                x
-            );
+            assert!(false, "Data received unexpectedly as none sent! {:?}", x);
         }
     }
 
@@ -3301,11 +3297,7 @@ fn test_source_2_universe_1_timeout() {
                                 }
                             },
                             Ok(x) => {
-                                assert!(
-                                    false,
-                                    "Data received unexpectedly as none sent! {:?}",
-                                    x
-                                );
+                                assert!(false, "Data received unexpectedly as none sent! {:?}", x);
                             }
                         }
                         break;
