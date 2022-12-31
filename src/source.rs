@@ -14,8 +14,8 @@
 // of each public item without relying on referring to private items.
 //
 
-use error::errors::*;
-use packet::*;
+use crate::error::errors::*;
+use crate::packet::*;
 
 use std::cell::RefCell;
 use std::cmp;

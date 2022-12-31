@@ -46,13 +46,13 @@ mod sacn_ipv6_multicast_test {
     /// UUID library used to handle the UUID's used in the CID fields.
     use uuid::Uuid;
 
-    use ipv4_tests::{
+    use crate::ipv4_tests::{
         TEST_DATA_FULL_CAPACITY_MULTIPLE_UNIVERSE,
         TEST_DATA_MULTIPLE_ALTERNATIVE_STARTCODE_UNIVERSE, TEST_DATA_MULTIPLE_UNIVERSE,
         TEST_DATA_PARTIAL_CAPACITY_UNIVERSE, TEST_DATA_SINGLE_ALTERNATIVE_STARTCODE_UNIVERSE,
         TEST_DATA_SINGLE_UNIVERSE,
     };
-    use TEST_NETWORK_INTERFACE_IPV6;
+    use crate::TEST_NETWORK_INTERFACE_IPV6;
 
     #[test]
     #[ignore]
@@ -1750,8 +1750,8 @@ mod sacn_ipv6_unicast_test {
 
     use sacn::error::errors::*;
 
-    use ipv4_tests::{TEST_DATA_MULTIPLE_UNIVERSE, TEST_DATA_SINGLE_UNIVERSE};
-    use TEST_NETWORK_INTERFACE_IPV6;
+    use crate::ipv4_tests::{TEST_DATA_MULTIPLE_UNIVERSE, TEST_DATA_SINGLE_UNIVERSE};
+    use crate::TEST_NETWORK_INTERFACE_IPV6;
 
     #[test]
     #[ignore]
