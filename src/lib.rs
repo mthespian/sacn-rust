@@ -186,7 +186,7 @@
 #![doc(html_root_url = "https://docs.rs/sacn/")]
 // #![warn(missing_docs)]
 // Recursion limit for error_chain.
-#![recursion_limit="1024"]
+#![recursion_limit = "1024"]
 
 #[macro_use]
 extern crate error_chain;
@@ -199,9 +199,9 @@ pub mod sacn_parse_pack_error;
 /// The errors used within the sACN crate, parse/pack errors are seperated out into sacn_parse_pack_error.
 pub mod error;
 
+extern crate libc;
 /// The library is built on top of socket2 to provide the underlying UDP networking interface.
 extern crate socket2;
-extern crate libc;
 
 /// The core crate is used for string processing during packet parsing/packing as well as to provide access to the Hash trait.
 extern crate core;
