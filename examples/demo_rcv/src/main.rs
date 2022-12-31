@@ -10,19 +10,19 @@
 // This file was created as part of a University of St Andrews Computer Science BSC Senior Honours Dissertation Project.
 
 //! An example demo sACN receiver which utilises the sACN library.
-//! 
+//!
 //! Primarily used for testing the library including real-world conformance, compliance, integration and acceptance tests.
 //! As a test program the error handling is limited for simplicity.
-//! 
+//!
 //! Usage instructions are described by either running the receiver and using the help command or by the get_usage_str function
 //! below.
-//! 
+//!
 //! The ACTION_... constants describe the various user input strings possible once the program has started, with more details described in get_usage_str within
 //! the code. The details aren't repeated outside of that to minimise the amount of references that have to be kept upto date and which could diverge over time.
-//! 
-//! Note the lack of top level constant strings used in the place of output format strings is due to a limitation in rust where the format string cannot be a 
+//!
+//! Note the lack of top level constant strings used in the place of output format strings is due to a limitation in rust where the format string cannot be a
 //! const.
-//! 
+//!
 
 #[macro_use]
 extern crate error_chain;
@@ -57,7 +57,7 @@ const ACTION_PRINT_DISCOVERED_SOURCES:              &str = "s";
 /// used as part of debugging / tests.
 const ACTION_PRINT_DISCOVERED_SOURCES_NO_TIMEOUT:   &str = "x";
 
-/// The string given by the user to quit the receiver. 
+/// The string given by the user to quit the receiver.
 const ACTION_QUIT:                                  &str = "q";
 
 /// The string given by the user to display the help.
@@ -70,7 +70,7 @@ const ACTION_LISTEN_UNIVERSE:                       &str = "l";
 const ACTION_STOP_LISTEN_UNIVERSE:                  &str = "t";
 
 /// The string given by the user to cause the receiver to sleep/block for a given time. This is used as part of tests as a way to encourage a specific
-/// ordering of concurrent events by having one side way for a period. This is discussed in more detail within the specific tests. 
+/// ordering of concurrent events by having one side way for a period. This is discussed in more detail within the specific tests.
 const ACTION_SLEEP:                                 &str = "w";
 
 /// The string given by the user to enable receiving preview data.
@@ -86,7 +86,7 @@ const ACTION_IGNORE:                                &str = "#";
 const ACTION_FILE_OUT:                              &str = "f";
 
 /// The string given by the user to cause termination packets to be announced. "e" for end.
-const ACTION_ANNOUNCE_TERMINATION:                  &str = "e"; 
+const ACTION_ANNOUNCE_TERMINATION:                  &str = "e";
 
 /// The headers used for the top of the file when the FILE_OUT action is used.
 const WRITE_TO_FILE_HEADERS: &str = "Data_ID, Universe, Sync_Addr, Priority, Preview_data?, Payload";
@@ -136,13 +136,13 @@ fn get_usage_str() -> String {
     {} <file-path> <recv-count> <timeout in sec>\n
 
     All input is ignored on lines starting with '{} '.
-    ", ACTION_RECV, ACTION_RECV_CONTINUOUS, ACTION_PRINT_DISCOVERED_SOURCES, ACTION_PRINT_DISCOVERED_SOURCES_NO_TIMEOUT, 
+    ", ACTION_RECV, ACTION_RECV_CONTINUOUS, ACTION_PRINT_DISCOVERED_SOURCES, ACTION_PRINT_DISCOVERED_SOURCES_NO_TIMEOUT,
     ACTION_QUIT, ACTION_HELP, ACTION_LISTEN_UNIVERSE, ACTION_STOP_LISTEN_UNIVERSE, ACTION_SLEEP, ACTION_PREVIEW, ACTION_ANNOUNCE_DISCOVERED,
     ACTION_ANNOUNCE_TERMINATION, ACTION_FILE_OUT, ACTION_IGNORE)
 }
 
 /// The entry point of the demo_rcv. Usage is described in get_usage_str or by running the program and typing "h" or "help".
-/// 
+///
 /// # Arguments
 /// Usage: ./main <interface_ip>
 fn main() {
@@ -171,7 +171,7 @@ fn main() {
                 println!("Error: Input data line unusable: {}", e);
             }
         }
-    } 
+    }
 }
 
 /// Handle a line of input on stdin to the program.
@@ -354,14 +354,14 @@ fn handle_input(dmx_recv: &mut SacnReceiver) -> Result<bool> {
 
 /// Writes the given data to the given file (uses the given data_id as first column).
 /// Uses comma separated values.
-/// 
+///
 /// # Arguments
 /// file: A mutable box reference containing the file to write to.
-/// 
+///
 /// data: The data to write to the file.
-/// 
+///
 /// data_id: The id used as the first column within the file for the data.
-/// 
+///
 fn write_to_file(file: &mut Box<File>, data: Vec<DMXData>, data_id: u64) -> Result<()> {
     for d in data {
         let values_str = create_values_str(d.values)?;
@@ -374,10 +374,10 @@ fn write_to_file(file: &mut Box<File>, data: Vec<DMXData>, data_id: u64) -> Resu
 }
 
 /// Converts the given array of u8 values into a comma separated string.
-/// 
+///
 /// # Arguments
 /// values: The unsigned 8 bit number values to turn into a string.
-/// 
+///
 fn create_values_str(values: Vec<u8>) -> Result<String> {
     let mut res: String = "".to_string();
 
@@ -390,7 +390,7 @@ fn create_values_str(values: Vec<u8>) -> Result<String> {
     // Adapted from.
     // https://users.rust-lang.org/t/what-is-right-ways-to-concat-strings/3780/4 (09/04/2020)
     res.push_str(&format!("{}", iter.next().unwrap()));
-    
+
     for v in iter {
         res.push_str(&format!(",{}", v));
     }
@@ -400,12 +400,12 @@ fn create_values_str(values: Vec<u8>) -> Result<String> {
 
 
 /// Prints the given output from recv to stdout.
-/// Errors are printed using their debug output except for universe terminated which is printed as "Universe x Terminated" where x is the universe. This 
+/// Errors are printed using their debug output except for universe terminated which is printed as "Universe x Terminated" where x is the universe. This
 /// is to avoid the CID being printed which changes for every test as it is randomly generated in most tests.
-/// 
+///
 /// # Arguments
 /// res: The data to display.
-/// 
+///
 fn print_recv(res: Result<Vec<DMXData>>) {
     match res {
         Err(e) => {
@@ -433,27 +433,27 @@ fn print_recv(res: Result<Vec<DMXData>>) {
 
 /// Prints the given data to stdout in the format [{{ Universe(s): x, Sync_Universe: y, Values: z }}, ...] where x is the universe, y is the synchronisation address
 /// and z is the values. The ... indicates that there may be multiple bits of data to print at once which follows the same format.
-/// 
+///
 /// # Arguments
 /// data: The data to be printed to stdout.
-/// 
+///
 fn print_data(mut data: Vec<DMXData>) {
     print!("[");
-    // Sort the data with lower universes first, this means that even though the data returned from the waiting data can be in any order this means 
+    // Sort the data with lower universes first, this means that even though the data returned from the waiting data can be in any order this means
     // that the ordering will be known which makes checking the output using a test script easier.
-    data.sort(); 
+    data.sort();
     for d in data {
         print!("{{ Universe(s): {}, Sync_Universe: {}, Values: {:?} }}, ", d.universe, d.sync_uni, d.values);
     }
     println!("]");
 }
 
-/// Prints the given array of discovered sources to std out. Uses the format "Name: x, Universes: y" where x is the source name and y is the universes registered to the 
-/// source. 
-/// 
+/// Prints the given array of discovered sources to std out. Uses the format "Name: x, Universes: y" where x is the source name and y is the universes registered to the
+/// source.
+///
 /// # Arguments
 /// src: The sources to print to standard out.
-/// 
+///
 fn print_discovered_sources(srcs: &Vec<DiscoveredSacnSource>) {
     for s in srcs {
         println!("Name: {}, Universes: {:?}", s.name, s.get_all_universes());
@@ -461,7 +461,7 @@ fn print_discovered_sources(srcs: &Vec<DiscoveredSacnSource>) {
 }
 
 /// Displays the usage/help string to stdout.
-/// 
+///
 fn display_help(){
     println!("{}", get_usage_str());
 }
