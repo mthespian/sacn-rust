@@ -9128,7 +9128,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9150,7 +9150,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9172,7 +9172,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9194,7 +9194,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9216,7 +9216,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9271,7 +9271,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9293,7 +9293,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9309,7 +9309,7 @@ pub mod data_parse_tests {
     fn test_data_packet_lowest_priority_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_LOWEST_PRIORITY) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9354,7 +9354,7 @@ pub mod data_parse_tests {
     fn test_data_packet_no_sync_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_NO_SYNC_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9405,7 +9405,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9421,7 +9421,7 @@ pub mod data_parse_tests {
     fn test_data_packet_options_bit_0_set_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_OPTIONS_BIT_0_SET_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9466,7 +9466,7 @@ pub mod data_parse_tests {
     fn test_data_packet_options_bit_1_set_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_OPTIONS_BIT_1_SET_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9511,7 +9511,7 @@ pub mod data_parse_tests {
     fn test_data_packet_options_bit_2_set_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_OPTIONS_BIT_2_SET_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9556,7 +9556,7 @@ pub mod data_parse_tests {
     fn test_data_packet_options_bit_3_set_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_OPTIONS_BIT_3_SET_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9601,7 +9601,7 @@ pub mod data_parse_tests {
     fn test_data_packet_options_bit_4_set_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_OPTIONS_BIT_4_SET_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9646,7 +9646,7 @@ pub mod data_parse_tests {
     fn test_data_packet_options_bit_5_set_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_OPTIONS_BIT_5_SET_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9691,7 +9691,7 @@ pub mod data_parse_tests {
     fn test_data_packet_options_bit_6_set_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_OPTIONS_BIT_6_SET_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9736,7 +9736,7 @@ pub mod data_parse_tests {
     fn test_data_packet_options_bit_7_set_parse() {
         match AcnRootLayerProtocol::parse(&TEST_DATA_PACKET_OPTIONS_BIT_7_SET_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -9787,7 +9787,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9809,7 +9809,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9831,7 +9831,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9853,7 +9853,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9875,7 +9875,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9897,7 +9897,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9919,7 +9919,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9942,7 +9942,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9964,7 +9964,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -9986,7 +9986,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -10008,7 +10008,7 @@ pub mod data_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -10024,7 +10024,7 @@ pub mod data_parse_tests {
     fn test_termination_packet_full_property_values_parse() {
         match AcnRootLayerProtocol::parse(&TEST_TERMINATION_FULL_PROPERTY_VALUES_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -10072,7 +10072,7 @@ pub mod data_parse_tests {
     fn test_termination_packet_partial_property_values_parse() {
         match AcnRootLayerProtocol::parse(&TEST_TERMINATION_PARTIAL_PROPERTY_VALUES_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {
@@ -10110,7 +10110,7 @@ pub mod data_parse_tests {
     fn test_termination_packet_empty_property_values_parse() {
         match AcnRootLayerProtocol::parse(&TEST_TERMINATION_EMPTY_PROPERTY_VALUES_PACKET) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::DataPacket(dpfl) => {

@@ -591,7 +591,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -614,7 +614,7 @@ pub mod discovery_parse_tests {
                         assert!(true, "Expected error family returned");
                     }
                     x => {
-                        assert!(false, format!("Unexpected error type returned: {}", x));
+                        assert!(false, "Unexpected error type returned: {}", x);
                     }
                 }
             }
@@ -637,7 +637,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -661,7 +661,7 @@ pub mod discovery_parse_tests {
                         assert!(true, "Expected error family returned");
                     }
                     x => {
-                        assert!(false, format!("Unexpected error type returned: {}", x));
+                        assert!(false, "Unexpected error type returned: {}", x);
                     }
                 }
             }
@@ -684,7 +684,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -708,7 +708,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -732,7 +732,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -755,7 +755,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -779,7 +779,7 @@ pub mod discovery_parse_tests {
                         assert!(true, "Expected error family returned");
                     }
                     x => {
-                        assert!(false, format!("Unexpected error type returned: {}", x));
+                        assert!(false, "Unexpected error type returned: {}", x);
                     }
                 }
             }
@@ -802,7 +802,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -818,7 +818,7 @@ pub mod discovery_parse_tests {
     fn test_discovery_packet_arbitrary_reserved_parse() {
         match AcnRootLayerProtocol::parse(&TEST_UNIVERSE_DISCOVERY_PACKET_ARBITRARY_RESERVED) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::UniverseDiscoveryPacket(udpfl) => {
@@ -846,7 +846,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -870,16 +870,14 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(p) => {
                 assert!(
                     false,
-                    format!(
-                        "Malformed packet was parsed when should have been rejected: {:?}",
-                        p
-                    )
+                    "Malformed packet was parsed when should have been rejected: {:?}",
+                    p
                 );
             }
         }
@@ -897,7 +895,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -921,7 +919,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -945,7 +943,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -967,7 +965,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -989,7 +987,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {
@@ -1198,7 +1196,7 @@ pub mod discovery_parse_tests {
 
         match AcnRootLayerProtocol::parse(&generated_packet) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::UniverseDiscoveryPacket(udpfl) => {
@@ -1226,7 +1224,7 @@ pub mod discovery_parse_tests {
 
         match AcnRootLayerProtocol::parse(&generated_packet) {
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {}", e));
+                assert!(false, "Unexpected error returned: {}", e);
             }
             Ok(p) => match p.pdu.data {
                 E131RootLayerData::UniverseDiscoveryPacket(udpfl) => {
@@ -1257,7 +1255,7 @@ pub mod discovery_parse_tests {
                     assert!(true, "Expected error returned");
                 }
                 x => {
-                    assert!(false, format!("Unexpected error type returned: {}", x));
+                    assert!(false, "Unexpected error type returned: {}", x);
                 }
             },
             Ok(_) => {

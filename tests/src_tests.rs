@@ -345,7 +345,8 @@ fn test_send_without_registering() {
             &ErrorKind::UniverseNotRegistered(ref _s) => assert!(true),
             _ => assert!(
                 false,
-                format!("Unexpected error type returned, {}", e.kind())
+                "Unexpected error type returned, {}",
+                e.kind()
             ),
         },
     }
@@ -372,7 +373,7 @@ fn test_send_above_priority() {
                 assert!(true, "Expected error returned");
             }
             x => {
-                assert!(false, format!("Unexpected error type returned, {:?}", x));
+                assert!(false, "Unexpected error type returned, {:?}", x);
             }
         },
         Ok(_) => {
@@ -475,7 +476,7 @@ fn test_register_discovery_universe() {
     let mut src = SacnSource::new_v4("Controller").unwrap();
     match src.register_universes(&[E131_DISCOVERY_UNIVERSE]) {
         Err(e) => {
-            assert!(false, format!("Unexpected error returned when attempting to register discovery universe, {:?}", e));
+            assert!(false, "Unexpected error returned when attempting to register discovery universe, {:?}", e);
         }
         _ => {
             assert!(true, "Registration successful");
@@ -490,7 +491,7 @@ fn test_register_max_universe() {
     let mut src = SacnSource::new_v4("Controller").unwrap();
     match src.register_universes(&[E131_MAX_MULTICAST_UNIVERSE]) {
         Err(e) => {
-            assert!(false, format!("Unexpected error returned when attempting to register the maximum allowed universe, {:?}", e));
+            assert!(false, "Unexpected error returned when attempting to register the maximum allowed universe, {:?}", e);
         }
         _ => {
             assert!(true, "Registration successful");
@@ -505,7 +506,7 @@ fn test_register_min_universe() {
     let mut src = SacnSource::new_v4("Controller").unwrap();
     match src.register_universes(&[E131_MIN_MULTICAST_UNIVERSE]) {
         Err(e) => {
-            assert!(false, format!("Unexpected error returned when attempting to register the maximum allowed universe, {:?}", e));
+            assert!(false, "Unexpected error returned when attempting to register the maximum allowed universe, {:?}", e);
         }
         _ => {
             assert!(true, "Registration successful");

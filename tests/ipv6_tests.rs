@@ -1353,7 +1353,7 @@ mod sacn_ipv6_multicast_test {
                     }
                 }
                 Err(e) => {
-                    assert!(false, format!("Unexpected error returned: {:?}", e));
+                    assert!(false, "Unexpected error returned: {:?}", e);
                 }
             }
         }
