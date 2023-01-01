@@ -1016,7 +1016,7 @@ fn test_ansi_e131_appendix_b_runthrough_ipv6() {
                 }
             }
             Err(e) => {
-                assert!(false, format!("Unexpected error returned: {:?}", e));
+                assert!(false, "Unexpected error returned: {:?}", e);
             }
         }
     }
