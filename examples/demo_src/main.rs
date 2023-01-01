@@ -31,7 +31,7 @@ extern crate error_chain;
 
 /// The demo itself utilises a small error-chain which wraps the errors from the sACN crate and a few standard crates.
 pub mod error;
-use error::errors::*;
+use crate::error::errors::*;
 
 extern crate sacn;
 
