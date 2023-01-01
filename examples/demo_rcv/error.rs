@@ -24,4 +24,3 @@ pub mod errors {
         errors {}
     }
 }
-

@@ -1,4 +1,5 @@
-#![recursion_limit="1024"] // Recursion limit for error-chain.
+#![recursion_limit = "1024"]
+// Recursion limit for error-chain.
 
 // Copyright 2020 sacn Developers
 //
@@ -35,15 +36,15 @@ use crate::error::errors::*;
 
 extern crate sacn;
 
-use sacn::source::SacnSource;
 use sacn::packet::{ACN_SDT_MULTICAST_PORT, UNIVERSE_CHANNEL_CAPACITY};
+use sacn::source::SacnSource;
 
-use std::time::{Duration, Instant};
+use std::env;
 use std::io;
 use std::net::{IpAddr, SocketAddr};
-use std::env;
-use std::thread::sleep;
 use std::str::FromStr;
+use std::thread::sleep;
+use std::time::{Duration, Instant};
 
 /// The start code used in termination packets.
 const TERMINATE_START_CODE: u8 = 0;
@@ -53,62 +54,62 @@ const TERMINATE_START_CODE: u8 = 0;
 const SHAPE_DATA_SEND_PERIOD: Duration = Duration::from_millis(33);
 
 /// User string for the preview command to set if preview data should be received.
-const ACTION_PREVIEW_OPTION:        &str = "p";
+const ACTION_PREVIEW_OPTION: &str = "p";
 
 /// User string for the data command to send a packet of data.
-const ACTION_DATA_OPTION:           &str = "d";
+const ACTION_DATA_OPTION: &str = "d";
 
 /// User string for the full data command to send a full universe of data.
-const ACTION_FULL_DATA_OPTION:      &str = "f";
+const ACTION_FULL_DATA_OPTION: &str = "f";
 
 /// User string for the unicast data command to send a packet of data using unicast.
-const ACTION_UNICAST_OPTION:        &str = "u";
+const ACTION_UNICAST_OPTION: &str = "u";
 
 /// User string for the register command to register a universe for sending.
-const ACTION_REGISTER_OPTION:       &str = "r";
+const ACTION_REGISTER_OPTION: &str = "r";
 
 /// User string for the terminate/quit command to terminate sending on a universe or terminate the sender entirely.
-const ACTION_TERMINATE_OPTION:      &str = "q";
+const ACTION_TERMINATE_OPTION: &str = "q";
 
 /// User string for the sleep command to make the sender wait for a certain period of time.
-const ACTION_SLEEP_OPTION:          &str = "w";
+const ACTION_SLEEP_OPTION: &str = "w";
 
 /// User string for the sync command to send a synchronisation packet.
-const ACTION_SYNC_OPTION:           &str = "s";
+const ACTION_SYNC_OPTION: &str = "s";
 
 /// User string for the unicast syncronisation command to send a synchronisation packet over unicast.
-const ACTION_UNICAST_SYNC_OPTION:   &str = "us";
+const ACTION_UNICAST_SYNC_OPTION: &str = "us";
 
 /// User string for the send data over time command which sends data to a specific universe that varies over time.
 const ACTION_DATA_OVER_TIME_OPTION: &str = "x";
 
 /// User string for the test preset command which runs on of the interoperability test presets.
-const ACTION_TEST_PRESENT_OPTION:   &str = "t";
+const ACTION_TEST_PRESENT_OPTION: &str = "t";
 
 /// User string to indicate that the input line should be ignored. This is mainly used for comments within the automated test input files.
-const ACTION_IGNORE:                &str = "#";
+const ACTION_IGNORE: &str = "#";
 
 /// User string for the all data option which sends an entire universe of data to a given address with all values set to the given value.
-const ACTION_ALL_DATA_OPTION:       &str = "a";
+const ACTION_ALL_DATA_OPTION: &str = "a";
 
 /// The test preset numbers which correspond to the various preset tests described in the sender-interoperability testing document.
 /// The test number for the two universes sender interoperability test (3).
-const TEST_PRESET_TWO_UNIVERSE:         usize = 3;
+const TEST_PRESET_TWO_UNIVERSE: usize = 3;
 /// The test number for the two universes unicast sender interoperability test (4).
 const TEST_PRESET_TWO_UNIVERSE_UNICAST: usize = 4;
 /// The test number for the moving channels sender interoperability test (7).
-const TEST_PRESET_MOVING_CHANNELS:      usize = 7;
+const TEST_PRESET_MOVING_CHANNELS: usize = 7;
 /// The test number for the preset rapid changes sender interoperability test (8).
-const TEST_PRESET_RAPID_CHANGES:        usize = 8;
+const TEST_PRESET_RAPID_CHANGES: usize = 8;
 /// The test number for the high data rate sender interoperability test (9).
-const TEST_PRESET_HIGH_DATA_RATE:       usize = 9;
+const TEST_PRESET_HIGH_DATA_RATE: usize = 9;
 
 /// Test preset number for acceptance test 100.
-const TEST_PRESET_ACCEPTANCE_TEST:      usize = 100;
+const TEST_PRESET_ACCEPTANCE_TEST: usize = 100;
 
 /// The duration of one of the preset tests.
 /// Each preset test run for 20 seconds.
-const TEST_PRESET_DURATION:         Duration = Duration::from_secs(20);
+const TEST_PRESET_DURATION: Duration = Duration::from_secs(20);
 
 /// The number of universes to send on during the high data rate test preset.
 const TEST_PRESET_HIGH_DATA_RATE_UNI_COUNT: u16 = 16;
@@ -168,7 +169,7 @@ const ACCEPT_TEST_DURATION: Duration = Duration::from_secs(30);
 /// Describes the various commands / command-line arguments avaliable and what they do.
 /// Displayed to the user if they ask for help or enter an unrecognised input.
 /// Not a const as const with format! not supported in rust.
-fn get_usage_str() -> String{
+fn get_usage_str() -> String {
     format!("Usage ./main <interface_ip> <source_name>\n
 
     Reads data from stdin and sends it using the protocol. \n
@@ -229,7 +230,7 @@ fn get_usage_str() -> String{
 ///
 /// # Arguments:
 /// Usage ./main <interface_ip> <source_name>
-fn main(){
+fn main() {
     let cmd_args: Vec<String> = env::args().collect();
 
     if cmd_args.len() < 3 {
@@ -241,7 +242,11 @@ fn main(){
     let source_name = &cmd_args[2];
 
     // Uses the next along port to allow usage on the same machine as a receiver which is using the ACN_SDT port.
-    let mut src = SacnSource::with_ip(source_name, SocketAddr::new(interface_ip.parse().unwrap(), ACN_SDT_MULTICAST_PORT + 1)).unwrap();
+    let mut src = SacnSource::with_ip(
+        source_name,
+        SocketAddr::new(interface_ip.parse().unwrap(), ACN_SDT_MULTICAST_PORT + 1),
+    )
+    .unwrap();
 
     println!("Started");
 
@@ -262,7 +267,7 @@ fn main(){
 
 /// Displays the usage/help string to stdout.
 ///
-fn display_help(){
+fn display_help() {
     println!("{}", get_usage_str());
 }
 
@@ -283,7 +288,10 @@ fn display_help(){
 ///
 fn handle_full_data_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result<bool> {
     if split_input.len() < 4 {
-        bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for data line ( < 4 )"));
+        bail!(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Insufficient parts for data line ( < 4 )"
+        ));
     }
 
     let universe: u16 = split_input[1].parse().unwrap();
@@ -294,7 +302,7 @@ fn handle_full_data_option(src: &mut SacnSource, split_input: Vec<&str>) -> Resu
 
     let mut data: [u8; 513] = [0; 513];
 
-    for i in 4 .. split_input.len() {
+    for i in 4..split_input.len() {
         data[i - 4] = split_input[i].parse().unwrap();
     }
 
@@ -320,7 +328,10 @@ fn handle_full_data_option(src: &mut SacnSource, split_input: Vec<&str>) -> Resu
 ///
 fn handle_all_data_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result<bool> {
     if split_input.len() < 3 {
-        bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for data line ( < 3 )"));
+        bail!(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Insufficient parts for data line ( < 3 )"
+        ));
     }
 
     let universe: u16 = split_input[1].parse().unwrap();
@@ -355,7 +366,10 @@ fn handle_data_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result<bo
     let universe: u16 = split_input[1].parse().unwrap();
 
     if split_input.len() < 4 {
-        bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for data line ( < 3 )"));
+        bail!(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Insufficient parts for data line ( < 3 )"
+        ));
     }
 
     let sync_uni: u16 = split_input[2].parse().unwrap();
@@ -364,7 +378,7 @@ fn handle_data_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result<bo
 
     let mut data: Vec<u8> = Vec::new();
 
-    for i in 4 .. split_input.len() {
+    for i in 4..split_input.len() {
         data.push(split_input[i].parse().unwrap());
     }
 
@@ -399,7 +413,10 @@ fn handle_unicast_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result
     let universe: u16 = split_input[1].parse().unwrap();
 
     if split_input.len() < 5 {
-        bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for data line ( < 5 )"));
+        bail!(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Insufficient parts for data line ( < 5 )"
+        ));
     }
 
     let sync_uni: u16 = split_input[2].parse().unwrap();
@@ -410,14 +427,30 @@ fn handle_unicast_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result
 
     let mut data: Vec<u8> = Vec::new();
 
-    for i in 5 .. split_input.len() {
+    for i in 5..split_input.len() {
         data.push(split_input[i].parse().unwrap());
     }
 
     if sync_uni == 0 {
-        src.send(&[universe], &data, Some(priority), Some(SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT).into()), None)?;
+        src.send(
+            &[universe],
+            &data,
+            Some(priority),
+            Some(
+                SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT).into(),
+            ),
+            None,
+        )?;
     } else {
-        src.send(&[universe], &data, Some(priority), Some(SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT).into()), Some(sync_uni))?;
+        src.send(
+            &[universe],
+            &data,
+            Some(priority),
+            Some(
+                SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT).into(),
+            ),
+            Some(sync_uni),
+        )?;
     }
 
     Ok(true)
@@ -439,7 +472,10 @@ fn handle_unicast_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result
 ///
 fn handle_data_over_time_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result<bool> {
     if split_input.len() < 4 {
-        bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for data line ( < 4 )"));
+        bail!(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Insufficient parts for data line ( < 4 )"
+        ));
     }
 
     let universe: u16 = split_input[1].parse().unwrap();
@@ -481,7 +517,10 @@ fn handle_data_over_time_option(src: &mut SacnSource, split_input: Vec<&str>) ->
 ///
 fn handle_test_preset_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result<bool> {
     if split_input.len() < 3 {
-        bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for test preset option ( < 3 )"));
+        bail!(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Insufficient parts for test preset option ( < 3 )"
+        ));
     }
 
     let preset: usize = split_input[1].parse().unwrap();
@@ -490,37 +529,60 @@ fn handle_test_preset_option(src: &mut SacnSource, split_input: Vec<&str>) -> Re
     match preset {
         TEST_PRESET_MOVING_CHANNELS => {
             run_test_moving_channel_preset(src, universe)?;
-        },
+        }
         TEST_PRESET_RAPID_CHANGES => {
             run_test_rapid_changes_preset(src, universe)?;
-        },
+        }
         TEST_PRESET_HIGH_DATA_RATE => {
             run_test_high_data_rate(src, universe, TEST_PRESET_HIGH_DATA_RATE_UNI_COUNT)?;
-        },
+        }
         TEST_PRESET_TWO_UNIVERSE => {
             if split_input.len() < 4 {
-                bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for test preset 2 universes option ( < 4 )"));
+                bail!(std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "Insufficient parts for test preset 2 universes option ( < 4 )"
+                ));
             }
 
             let universe_2: u16 = split_input[3].parse().unwrap();
 
-            run_test_2_universes_distinct_values(src, universe, universe_2, std::u8::MAX / 2, std::u8::MAX, None)?;
-        },
+            run_test_2_universes_distinct_values(
+                src,
+                universe,
+                universe_2,
+                std::u8::MAX / 2,
+                std::u8::MAX,
+                None,
+            )?;
+        }
         TEST_PRESET_TWO_UNIVERSE_UNICAST => {
             if split_input.len() < 5 {
-                bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for test preset 2 universes option ( < 4 )"));
+                bail!(std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "Insufficient parts for test preset 2 universes option ( < 4 )"
+                ));
             }
 
             let universe_2: u16 = split_input[3].parse().unwrap();
             let addr = SocketAddr::new(split_input[4].parse().unwrap(), ACN_SDT_MULTICAST_PORT);
 
-            run_test_2_universes_distinct_values(src, universe, universe_2, std::u8::MAX / 2, std::u8::MAX, Some(addr))?;
-        },
+            run_test_2_universes_distinct_values(
+                src,
+                universe,
+                universe_2,
+                std::u8::MAX / 2,
+                std::u8::MAX,
+                Some(addr),
+            )?;
+        }
         TEST_PRESET_ACCEPTANCE_TEST => {
             run_acceptance_test_demo(src)?;
         }
         _ => {
-            bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Unrecognised test preset option"));
+            bail!(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "Unrecognised test preset option"
+            ));
         }
     }
 
@@ -543,7 +605,14 @@ fn handle_test_preset_option(src: &mut SacnSource, split_input: Vec<&str>) -> Re
 ///
 /// dst_ip: None to use multicast or Some(addr) to use unicast to a specific address.
 ///
-fn run_test_2_universes_distinct_values(src: &mut SacnSource, uni_1: u16, uni_2: u16, uni1_val: u8, uni2_val: u8, dst_ip: Option<SocketAddr>) -> Result<()> {
+fn run_test_2_universes_distinct_values(
+    src: &mut SacnSource,
+    uni_1: u16,
+    uni_2: u16,
+    uni1_val: u8,
+    uni2_val: u8,
+    dst_ip: Option<SocketAddr>,
+) -> Result<()> {
     let start_time = Instant::now();
 
     let mut data_1: [u8; UNIVERSE_CHANNEL_CAPACITY] = [uni1_val; UNIVERSE_CHANNEL_CAPACITY];
@@ -574,10 +643,11 @@ fn run_test_moving_channel_preset(src: &mut SacnSource, universe: u16) -> Result
     let mut data: [u8; UNIVERSE_CHANNEL_CAPACITY] = [0; UNIVERSE_CHANNEL_CAPACITY];
 
     while start_time.elapsed() < TEST_PRESET_DURATION {
-
         // Use a 0 startcode so skip first value.
-        for i in 1 .. data.len() {
-            let x: f64 = ((start_time.elapsed().as_millis() as f64) + (i as f64) * MOVING_CHANNEL_TEST_WAVE_OFFSET) / MOVING_CHANNEL_TEST_WAVE_PERIOD;
+        for i in 1..data.len() {
+            let x: f64 = ((start_time.elapsed().as_millis() as f64)
+                + (i as f64) * MOVING_CHANNEL_TEST_WAVE_OFFSET)
+                / MOVING_CHANNEL_TEST_WAVE_PERIOD;
             let d: u8 = ((std::u8::MAX as f64) * x.sin()) as u8;
             data[i] = d;
         }
@@ -630,20 +700,24 @@ fn run_test_rapid_changes_preset(src: &mut SacnSource, universe: u16) -> Result<
 ///
 /// universe_count: The number of universes starting at the start_universe (inclusive) to send data on.
 ///
-fn run_test_high_data_rate(src: &mut SacnSource, start_universe: u16, universe_count: u16) -> Result<()> {
+fn run_test_high_data_rate(
+    src: &mut SacnSource,
+    start_universe: u16,
+    universe_count: u16,
+) -> Result<()> {
     let start_time = Instant::now();
 
     let mut counter: f64 = 0.0;
 
     while start_time.elapsed() < TEST_PRESET_DURATION {
-        for universe in start_universe .. start_universe + universe_count {
-            let d = ((universe - start_universe) as f64) * (TEST_PRESET_HIGH_DATA_RATE_VARIATION_RANGE * counter.sin());
+        for universe in start_universe..start_universe + universe_count {
+            let d = ((universe - start_universe) as f64)
+                * (TEST_PRESET_HIGH_DATA_RATE_VARIATION_RANGE * counter.sin());
             let mut data: [u8; UNIVERSE_CHANNEL_CAPACITY] = [d as u8; UNIVERSE_CHANNEL_CAPACITY];
             // Use a zero startcode.
             data[0] = 0;
             src.send(&[universe], &data, None, None, None)?;
         }
-
 
         counter = counter + 0.05;
         sleep(TEST_PRESET_UPDATE_PERIOD);
@@ -697,7 +771,13 @@ fn run_acceptance_test_demo(src: &mut SacnSource) -> Result<()> {
         // Cycle through each step.
         let pos: usize = step_counter / STEP_LENGTH;
 
-        src.send(&[ACCEPT_TEST_UNI_1, ACCEPT_TEST_UNI_2], &data[pos], None, None, None)?;
+        src.send(
+            &[ACCEPT_TEST_UNI_1, ACCEPT_TEST_UNI_2],
+            &data[pos],
+            None,
+            None,
+            None,
+        )?;
 
         step_counter = (step_counter + 1) % (STEP_LENGTH * STEP_COUNT); // Loop back around at the end.
         sleep(TEST_PRESET_UPDATE_PERIOD);
@@ -714,19 +794,52 @@ fn run_acceptance_test_demo(src: &mut SacnSource) -> Result<()> {
 ///
 fn gen_acceptance_test_step_1(buf: &mut [u8; UNIVERSE_CHANNEL_CAPACITY * 2]) {
     // Backlights.
-    gen_acceptance_test_step_1_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_1 .. ACCEPT_TEST_BACKLIGHT_ADDR_1 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_2 .. ACCEPT_TEST_BACKLIGHT_ADDR_2 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_3 .. ACCEPT_TEST_BACKLIGHT_ADDR_3 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_4 .. ACCEPT_TEST_BACKLIGHT_ADDR_4 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_5 .. ACCEPT_TEST_BACKLIGHT_ADDR_5 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_6 .. ACCEPT_TEST_BACKLIGHT_ADDR_6 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_7 .. ACCEPT_TEST_BACKLIGHT_ADDR_7 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_8 .. ACCEPT_TEST_BACKLIGHT_ADDR_8 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
+    gen_acceptance_test_step_1_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_1
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_1 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_2
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_2 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_3
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_3 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_4
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_4 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_5
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_5 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_6
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_6 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_7
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_7 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_8
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_8 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
 
     // Frontlights.
-    gen_acceptance_test_step_1_frontlight_state(&mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_1 .. ACCEPT_TEST_FRONTLIGHT_ADDR_1 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_frontlight_state(&mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_2 .. ACCEPT_TEST_FRONTLIGHT_ADDR_2 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_1_frontlight_state(&mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_3 .. ACCEPT_TEST_FRONTLIGHT_ADDR_3 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT]);
+    gen_acceptance_test_step_1_frontlight_state(
+        &mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_1
+            ..ACCEPT_TEST_FRONTLIGHT_ADDR_1 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_frontlight_state(
+        &mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_2
+            ..ACCEPT_TEST_FRONTLIGHT_ADDR_2 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_1_frontlight_state(
+        &mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_3
+            ..ACCEPT_TEST_FRONTLIGHT_ADDR_3 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT],
+    );
 }
 
 /// Acceptance Test.
@@ -760,26 +873,26 @@ fn gen_acceptance_test_step_1(buf: &mut [u8; UNIVERSE_CHANNEL_CAPACITY * 2]) {
 ///
 fn gen_acceptance_test_step_1_backlight_state(buf: &mut [u8]) {
     // Position the fixtures pointing at the stage.
-    buf[0] = 128;  // Pan
-    buf[1] = 0;    // Pan Fine
-    buf[2] = 148;  // Tilt
-    buf[3] = 114;  // Tilt Fine
-    buf[4] = 0;    // Pan/Tilt Speed
+    buf[0] = 128; // Pan
+    buf[1] = 0; // Pan Fine
+    buf[2] = 148; // Tilt
+    buf[3] = 114; // Tilt Fine
+    buf[4] = 0; // Pan/Tilt Speed
 
     // Leave the fixtures in their default options state.
-    buf[5] = 0;    // Power/Special Functions (Control channel)
+    buf[5] = 0; // Power/Special Functions (Control channel)
 
     // Set the fixture to white.
-    buf[6] = 0;    // Using Red-Green-Blue-White mixing so don't use the virtual colour wheel.
-    buf[7] = 0;    // Red at 0.
-    buf[8] = 0;    // Green at 0.
-    buf[9] = 0;    // Blue at 0.
+    buf[6] = 0; // Using Red-Green-Blue-White mixing so don't use the virtual colour wheel.
+    buf[7] = 0; // Red at 0.
+    buf[8] = 0; // Green at 0.
+    buf[9] = 0; // Blue at 0.
     buf[10] = 255; // White at full.
-    buf[11] = 0;   // Colour temperature at 0 (meaning default colour temperature of around 6500k).
-    buf[12] = 45;  // Use additive colour mixing. 45 is the default value.
+    buf[11] = 0; // Colour temperature at 0 (meaning default colour temperature of around 6500k).
+    buf[12] = 45; // Use additive colour mixing. 45 is the default value.
 
     // Set the fixture so it covers the stage.
-    buf[13] = 91;  // Zoom the fixture so it is wide enough to get reasonable coverage.
+    buf[13] = 91; // Zoom the fixture so it is wide enough to get reasonable coverage.
 
     // Set the fixture to full.
     buf[14] = 255; // The shutter is set to 255 to indicate it is fully open meaning all light can pass.
@@ -810,14 +923,38 @@ fn gen_acceptance_test_step_2(buf: &mut [u8; UNIVERSE_CHANNEL_CAPACITY * 2]) {
     gen_acceptance_test_step_1(buf);
 
     // The backlight fixtures change colour so therefore the colour channels within them need changing.
-    gen_acceptance_test_step_2_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_1 .. ACCEPT_TEST_BACKLIGHT_ADDR_1 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_2_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_2 .. ACCEPT_TEST_BACKLIGHT_ADDR_2 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_2_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_3 .. ACCEPT_TEST_BACKLIGHT_ADDR_3 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_2_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_4 .. ACCEPT_TEST_BACKLIGHT_ADDR_4 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_2_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_5 .. ACCEPT_TEST_BACKLIGHT_ADDR_5 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_2_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_6 .. ACCEPT_TEST_BACKLIGHT_ADDR_6 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_2_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_7 .. ACCEPT_TEST_BACKLIGHT_ADDR_7 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_2_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_8 .. ACCEPT_TEST_BACKLIGHT_ADDR_8 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
+    gen_acceptance_test_step_2_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_1
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_1 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_2_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_2
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_2 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_2_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_3
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_3 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_2_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_4
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_4 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_2_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_5
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_5 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_2_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_6
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_6 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_2_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_7
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_7 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_2_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_8
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_8 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
 
     // Note that because the front light is not changing in this step it doesn't have to be modified.
 }
@@ -831,8 +968,8 @@ fn gen_acceptance_test_step_2(buf: &mut [u8; UNIVERSE_CHANNEL_CAPACITY * 2]) {
 ///
 fn gen_acceptance_test_step_2_backlight_state(buf: &mut [u8]) {
     // Set the fixture to red.
-    buf[7] = 255;  // Red at full.
-    buf[10] = 0;   // White at 0.
+    buf[7] = 255; // Red at full.
+    buf[10] = 0; // White at 0.
 }
 
 /// Acceptance Test.
@@ -845,14 +982,38 @@ fn gen_acceptance_test_step_3(buf: &mut [u8; UNIVERSE_CHANNEL_CAPACITY * 2]) {
     gen_acceptance_test_step_2(buf);
 
     // The backlight fixtures change colour so therefore the colour channels within them need changing.
-    gen_acceptance_test_step_3_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_1 .. ACCEPT_TEST_BACKLIGHT_ADDR_1 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_3_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_2 .. ACCEPT_TEST_BACKLIGHT_ADDR_2 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_3_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_3 .. ACCEPT_TEST_BACKLIGHT_ADDR_3 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_3_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_4 .. ACCEPT_TEST_BACKLIGHT_ADDR_4 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_3_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_5 .. ACCEPT_TEST_BACKLIGHT_ADDR_5 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_3_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_6 .. ACCEPT_TEST_BACKLIGHT_ADDR_6 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_3_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_7 .. ACCEPT_TEST_BACKLIGHT_ADDR_7 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_3_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_8 .. ACCEPT_TEST_BACKLIGHT_ADDR_8 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
+    gen_acceptance_test_step_3_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_1
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_1 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_3_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_2
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_2 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_3_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_3
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_3 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_3_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_4
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_4 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_3_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_5
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_5 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_3_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_6
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_6 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_3_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_7
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_7 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_3_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_8
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_8 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
 }
 
 /// Acceptance Test.
@@ -864,8 +1025,8 @@ fn gen_acceptance_test_step_3(buf: &mut [u8; UNIVERSE_CHANNEL_CAPACITY * 2]) {
 ///
 fn gen_acceptance_test_step_3_backlight_state(buf: &mut [u8]) {
     // Set the fixture to blue.
-    buf[7] = 0;     // Red at 0.
-    buf[9] = 255;   // Blue at full.
+    buf[7] = 0; // Red at 0.
+    buf[9] = 255; // Blue at full.
 }
 
 /// Acceptance test.
@@ -880,19 +1041,52 @@ fn gen_acceptance_test_step_4(buf: &mut [u8; UNIVERSE_CHANNEL_CAPACITY * 2]) {
     // All fixtures need to change in this state to off so need to update them all.
 
     // Backlights.
-    gen_acceptance_test_step_4_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_1 .. ACCEPT_TEST_BACKLIGHT_ADDR_1 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_2 .. ACCEPT_TEST_BACKLIGHT_ADDR_2 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_3 .. ACCEPT_TEST_BACKLIGHT_ADDR_3 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_4 .. ACCEPT_TEST_BACKLIGHT_ADDR_4 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_5 .. ACCEPT_TEST_BACKLIGHT_ADDR_5 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_6 .. ACCEPT_TEST_BACKLIGHT_ADDR_6 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_7 .. ACCEPT_TEST_BACKLIGHT_ADDR_7 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_backlight_state(&mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_8 .. ACCEPT_TEST_BACKLIGHT_ADDR_8 + ACCEPT_TEST_BACKLIGHT_CH_COUNT]);
+    gen_acceptance_test_step_4_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_1
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_1 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_2
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_2 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_3
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_3 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_4
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_4 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_5
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_5 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_6
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_6 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_7
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_7 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_backlight_state(
+        &mut buf[ACCEPT_TEST_BACKLIGHT_ADDR_8
+            ..ACCEPT_TEST_BACKLIGHT_ADDR_8 + ACCEPT_TEST_BACKLIGHT_CH_COUNT],
+    );
 
     // Frontlights.
-    gen_acceptance_test_step_4_frontlight_state(&mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_1 .. ACCEPT_TEST_FRONTLIGHT_ADDR_1 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_frontlight_state(&mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_2 .. ACCEPT_TEST_FRONTLIGHT_ADDR_2 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT]);
-    gen_acceptance_test_step_4_frontlight_state(&mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_3 .. ACCEPT_TEST_FRONTLIGHT_ADDR_3 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT]);
+    gen_acceptance_test_step_4_frontlight_state(
+        &mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_1
+            ..ACCEPT_TEST_FRONTLIGHT_ADDR_1 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_frontlight_state(
+        &mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_2
+            ..ACCEPT_TEST_FRONTLIGHT_ADDR_2 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT],
+    );
+    gen_acceptance_test_step_4_frontlight_state(
+        &mut buf[ACCEPT_TEST_FRONTLIGHT_ADDR_3
+            ..ACCEPT_TEST_FRONTLIGHT_ADDR_3 + ACCEPT_TEST_FRONTLIGHT_CH_COUNT],
+    );
 }
 
 /// Acceptance Test.
@@ -926,21 +1120,24 @@ fn gen_acceptance_test_step_4_frontlight_state(buf: &mut [u8]) {
 /// # Arguments
 /// src: A mutable reference to the SacnSource to perform the user instructions on.
 ///
-fn handle_input(src: &mut SacnSource) -> Result <bool>{
+fn handle_input(src: &mut SacnSource) -> Result<bool> {
     let mut input = String::new();
 
     match io::stdin().read_line(&mut input) {
         Ok(n) => {
             if n == 0 {
                 // Means EOF is reached so terminate
-                return Ok(false)
+                return Ok(false);
             }
 
             // https://www.tutorialspoint.com/rust/rust_string.htm (03/02/2020)
             let split_input: Vec<&str> = input.split_whitespace().collect();
             if split_input.len() < 2 {
                 display_help();
-                bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts ( < 2 )"));
+                bail!(std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "Insufficient parts ( < 2 )"
+                ));
             }
 
             match split_input[0] {
@@ -948,18 +1145,10 @@ fn handle_input(src: &mut SacnSource) -> Result <bool>{
                     // Ignore Input
                     Ok(true)
                 }
-                ACTION_DATA_OPTION => {
-                    handle_data_option(src, split_input)
-                }
-                ACTION_FULL_DATA_OPTION => {
-                    handle_full_data_option(src, split_input)
-                }
-                ACTION_UNICAST_OPTION => {
-                    handle_unicast_option(src, split_input)
-                }
-                ACTION_DATA_OVER_TIME_OPTION => {
-                    handle_data_over_time_option(src, split_input)
-                }
+                ACTION_DATA_OPTION => handle_data_option(src, split_input),
+                ACTION_FULL_DATA_OPTION => handle_full_data_option(src, split_input),
+                ACTION_UNICAST_OPTION => handle_unicast_option(src, split_input),
+                ACTION_DATA_OVER_TIME_OPTION => handle_data_over_time_option(src, split_input),
                 ACTION_SYNC_OPTION => {
                     let universe: u16 = split_input[1].parse().unwrap();
                     src.send_sync_packet(universe, None)?;
@@ -967,12 +1156,18 @@ fn handle_input(src: &mut SacnSource) -> Result <bool>{
                 }
                 ACTION_UNICAST_SYNC_OPTION => {
                     if split_input.len() < 3 {
-                        bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts for data line ( < 3 )"));
+                        bail!(std::io::Error::new(
+                            std::io::ErrorKind::InvalidInput,
+                            "Insufficient parts for data line ( < 3 )"
+                        ));
                     }
 
                     let universe: u16 = split_input[1].parse().unwrap();
                     let dst_ip = split_input[2];
-                    src.send_sync_packet(universe, Some(SocketAddr::from_str(dst_ip).unwrap().into()))?;
+                    src.send_sync_packet(
+                        universe,
+                        Some(SocketAddr::from_str(dst_ip).unwrap().into()),
+                    )?;
                     Ok(true)
                 }
                 ACTION_REGISTER_OPTION => {
@@ -986,7 +1181,7 @@ fn handle_input(src: &mut SacnSource) -> Result <bool>{
                     match val {
                         Ok(v) => {
                             src.set_preview_mode(v)?;
-                        },
+                        }
                         Err(_e) => {
                             bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Preview flag option not 'true'/'false' or otherwise parsable as boolean"));
                         }
@@ -996,7 +1191,7 @@ fn handle_input(src: &mut SacnSource) -> Result <bool>{
                 ACTION_TERMINATE_OPTION => {
                     let universe: u16 = split_input[1].parse().unwrap();
                     if universe == 0 {
-                        return Ok(false)
+                        return Ok(false);
                     } else {
                         src.terminate_stream(universe, TERMINATE_START_CODE)?;
                     }
@@ -1005,20 +1200,22 @@ fn handle_input(src: &mut SacnSource) -> Result <bool>{
                 ACTION_SLEEP_OPTION => {
                     if split_input.len() < 2 {
                         display_help();
-                        bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, "Insufficient parts ( < 2 )"));
+                        bail!(std::io::Error::new(
+                            std::io::ErrorKind::InvalidInput,
+                            "Insufficient parts ( < 2 )"
+                        ));
                     }
                     let millis: u64 = split_input[1].parse().unwrap();
                     sleep(Duration::from_millis(millis));
                     Ok(true)
                 }
-                ACTION_ALL_DATA_OPTION => {
-                    handle_all_data_option(src, split_input)
-                }
-                ACTION_TEST_PRESENT_OPTION => {
-                    handle_test_preset_option(src, split_input)
-                }
+                ACTION_ALL_DATA_OPTION => handle_all_data_option(src, split_input),
+                ACTION_TEST_PRESENT_OPTION => handle_test_preset_option(src, split_input),
                 x => {
-                    bail!(std::io::Error::new(std::io::ErrorKind::InvalidInput, format!("Unknown input type: {}", x)));
+                    bail!(std::io::Error::new(
+                        std::io::ErrorKind::InvalidInput,
+                        format!("Unknown input type: {}", x)
+                    ));
                 }
             }
         }

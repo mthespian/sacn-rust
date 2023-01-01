@@ -2659,7 +2659,11 @@ mod test {
                 assert!(false, "Receiver incorrectly accepted third data packet");
             }
             Err(e) => {
-                assert!(false, "Receiver correctly rejected third data packet but with unexpected error: {}", e);
+                assert!(
+                    false,
+                    "Receiver correctly rejected third data packet but with unexpected error: {}",
+                    e
+                );
             }
         }
     }
@@ -2745,10 +2749,8 @@ mod test {
                     } else {
                         assert!(
                             false,
-                            
-                                "Data packet with sequence number: {} was rejected incorrectly",
-                                i
-                            
+                            "Data packet with sequence number: {} was rejected incorrectly",
+                            i
                         );
                     }
                 }
@@ -2757,10 +2759,8 @@ mod test {
                     if (diff <= REJECT_RANGE_UPPER_BOUND) && (diff > REJECT_RANGE_LOWER_BOUND) {
                         assert!(
                             false,
-                            
-                                "Data packet with sequence number: {} was accepted incorrectly",
-                                i
-                            
+                            "Data packet with sequence number: {} was accepted incorrectly",
+                            i
                         );
                     } else {
                         assert!(
@@ -2861,10 +2861,8 @@ mod test {
                     } else {
                         assert!(
                             false,
-                            
-                                "Sync packet with sequence number: {} was rejected incorrectly",
-                                i
-                            
+                            "Sync packet with sequence number: {} was rejected incorrectly",
+                            i
                         );
                     }
                 }
@@ -2873,10 +2871,8 @@ mod test {
                     if (diff <= REJECT_RANGE_UPPER_BOUND) && (diff > REJECT_RANGE_LOWER_BOUND) {
                         assert!(
                             false,
-                            
-                                "Sync packet with sequence number: {} was accepted incorrectly",
-                                i
-                            
+                            "Sync packet with sequence number: {} was accepted incorrectly",
+                            i
                         );
                     } else {
                         assert!(
@@ -2945,7 +2941,11 @@ mod test {
                 assert!(false, "Receiver incorrectly accepted third sync packet");
             }
             Err(e) => {
-                assert!(false, "Receiver correctly rejected third sync packet but with unexpected error: {}", e);
+                assert!(
+                    false,
+                    "Receiver correctly rejected third sync packet but with unexpected error: {}",
+                    e
+                );
             }
         }
     }
@@ -3226,25 +3226,24 @@ mod test {
         let source_limit: Option<usize> = Some(0);
 
         match SacnReceiver::with_ip(addr, source_limit) {
-            Err(e) => {
-                match e.kind() {
-                    ErrorKind::Io(x) => {
-                        match x.kind() {
-                            std::io::ErrorKind::InvalidInput => {
-                                assert!(true, "Correct error returned");
-                            }
-                            _ => {
-                                assert!(false, "Expected error returned");
-                            }
-                        }
+            Err(e) => match e.kind() {
+                ErrorKind::Io(x) => match x.kind() {
+                    std::io::ErrorKind::InvalidInput => {
+                        assert!(true, "Correct error returned");
                     }
                     _ => {
-                        assert!(false, "Unexpected error type returned");
+                        assert!(false, "Expected error returned");
                     }
+                },
+                _ => {
+                    assert!(false, "Unexpected error type returned");
                 }
-            }
+            },
             _ => {
-                assert!(false, "SacnReceiver accepted 0 source limit when it shouldn't");
+                assert!(
+                    false,
+                    "SacnReceiver accepted 0 source limit when it shouldn't"
+                );
             }
         }
     }
@@ -3254,7 +3253,10 @@ mod test {
         let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::LOCALHOST), ACN_SDT_MULTICAST_PORT);
         let dmx_rcv = SacnReceiver::with_ip(addr, None).unwrap();
 
-        assert!(dmx_rcv.is_multicast_enabled(), "Multicast not enabled by default");
+        assert!(
+            dmx_rcv.is_multicast_enabled(),
+            "Multicast not enabled by default"
+        );
     }
 
     #[test]
@@ -3264,7 +3266,10 @@ mod test {
 
         dmx_rcv.set_is_multicast_enabled(false).unwrap();
 
-        assert!(!dmx_rcv.is_multicast_enabled(), "Multicast not disabled correctly");
+        assert!(
+            !dmx_rcv.is_multicast_enabled(),
+            "Multicast not disabled correctly"
+        );
     }
 
     #[test]
@@ -3276,7 +3281,7 @@ mod test {
 
         let data: DMXData = DMXData {
             universe: 0,
-            values: vec![1,2,3],
+            values: vec![1, 2, 3],
             sync_uni: SYNC_ADDR,
             priority: 100,
             src_cid: Some(Uuid::new_v4()),
@@ -3288,7 +3293,11 @@ mod test {
 
         dmx_rcv.clear_all_waiting_data();
 
-        assert_eq!(dmx_rcv.rtrv_waiting_data(SYNC_ADDR), Vec::new(), "Data was not reset as expected");
+        assert_eq!(
+            dmx_rcv.rtrv_waiting_data(SYNC_ADDR),
+            Vec::new(),
+            "Data was not reset as expected"
+        );
     }
 
     #[test]
@@ -3296,7 +3305,10 @@ mod test {
         let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::LOCALHOST), ACN_SDT_MULTICAST_PORT);
         let dmx_rcv = SacnReceiver::with_ip(addr, None).unwrap();
 
-        assert!(!dmx_rcv.get_announce_source_discovery(), "Announce source discovery is true by default when should be false");
+        assert!(
+            !dmx_rcv.get_announce_source_discovery(),
+            "Announce source discovery is true by default when should be false"
+        );
     }
 
     #[test]
@@ -3304,7 +3316,10 @@ mod test {
         let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::LOCALHOST), ACN_SDT_MULTICAST_PORT);
         let dmx_rcv = SacnReceiver::with_ip(addr, None).unwrap();
 
-        assert!(!dmx_rcv.get_announce_timeout(), "Announce timeout flag is true by default when should be false");
+        assert!(
+            !dmx_rcv.get_announce_timeout(),
+            "Announce timeout flag is true by default when should be false"
+        );
     }
 
     #[test]
@@ -3312,7 +3327,10 @@ mod test {
         let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::LOCALHOST), ACN_SDT_MULTICAST_PORT);
         let dmx_rcv = SacnReceiver::with_ip(addr, None).unwrap();
 
-        assert!(!dmx_rcv.get_announce_stream_termination(), "Announce termination flag is true by default when should be false");
+        assert!(
+            !dmx_rcv.get_announce_stream_termination(),
+            "Announce termination flag is true by default when should be false"
+        );
     }
 
     /// Tests handling a sync packet for a synchronisation address which isn't currently being listened to.
@@ -3321,10 +3339,15 @@ mod test {
         let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::LOCALHOST), ACN_SDT_MULTICAST_PORT);
         let mut dmx_rcv = SacnReceiver::with_ip(addr, None).unwrap();
 
-        let res = dmx_rcv.handle_sync_packet(Uuid::new_v4(), SynchronizationPacketFramingLayer{
-            sequence_number: 0,
-            synchronization_address: 1
-        }).unwrap(); // Checks that no error is produced.
+        let res = dmx_rcv
+            .handle_sync_packet(
+                Uuid::new_v4(),
+                SynchronizationPacketFramingLayer {
+                    sequence_number: 0,
+                    synchronization_address: 1,
+                },
+            )
+            .unwrap(); // Checks that no error is produced.
 
         assert_eq!(res, None, "Sync packet produced output when should have been ignored as for an address that isn't being listened to");
     }
@@ -3333,7 +3356,7 @@ mod test {
     #[test]
     fn test_dmx_data_eq() {
         const UNIVERSE: u16 = 1;
-        let values: Vec<u8> = vec!(1,2,3);
+        let values: Vec<u8> = vec![1, 2, 3];
         const SYNC_ADDR: u16 = 1;
         const PRIORITY: u8 = 100;
         const PREVIEW: bool = false;
@@ -3362,6 +3385,9 @@ mod test {
             recv_timestamp: Instant::now(),
         };
 
-        assert_eq!(data1, data2, "DMX data not seen as equivalent when should be");
+        assert_eq!(
+            data1, data2,
+            "DMX data not seen as equivalent when should be"
+        );
     }
 }
