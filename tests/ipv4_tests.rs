@@ -1578,7 +1578,7 @@ fn test_two_senders_two_recv_multicast_ipv4() {
             .unwrap();
 
             // Receivers listen to all universes
-            for i in (BASE_UNIVERSE as u16)..((SND_THREADS as u16) + (BASE_UNIVERSE as u16)) {
+            for i in BASE_UNIVERSE..((SND_THREADS as u16) + BASE_UNIVERSE) {
                 dmx_recv.listen_universes(&[i]).unwrap();
             }
 
@@ -1710,7 +1710,7 @@ fn test_three_senders_two_recv_multicast_ipv4() {
             .unwrap();
 
             // Receivers listen to all universes
-            for i in (BASE_UNIVERSE as u16)..((SND_THREADS as u16) + (BASE_UNIVERSE as u16)) {
+            for i in BASE_UNIVERSE..((SND_THREADS as u16) + BASE_UNIVERSE) {
                 dmx_recv.listen_universes(&[i]).unwrap();
             }
 
@@ -1842,7 +1842,7 @@ fn test_two_senders_three_recv_multicast_ipv4() {
             .unwrap();
 
             // Receivers listen to all universes
-            for i in (BASE_UNIVERSE as u16)..((SND_THREADS as u16) + (BASE_UNIVERSE as u16)) {
+            for i in BASE_UNIVERSE..((SND_THREADS as u16) + BASE_UNIVERSE) {
                 dmx_recv.listen_universes(&[i]).unwrap();
             }
 
@@ -1974,7 +1974,7 @@ fn test_three_senders_three_recv_multicast_ipv4() {
             .unwrap();
 
             // Receivers listen to all universes
-            for i in (BASE_UNIVERSE as u16)..((SND_THREADS as u16) + (BASE_UNIVERSE as u16)) {
+            for i in BASE_UNIVERSE..((SND_THREADS as u16) + BASE_UNIVERSE) {
                 dmx_recv.listen_universes(&[i]).unwrap();
             }
 
@@ -2642,7 +2642,7 @@ fn test_receiver_sources_exceeded_3() {
     .unwrap();
 
     // Receivers listen to all universes
-    for i in (BASE_UNIVERSE as u16)..((SND_THREADS as u16) + (BASE_UNIVERSE as u16)) {
+    for i in BASE_UNIVERSE..((SND_THREADS as u16) + BASE_UNIVERSE) {
         dmx_recv.listen_universes(&[i]).unwrap();
     }
 
@@ -2741,7 +2741,7 @@ fn test_receiver_source_limit_2() {
     .unwrap();
 
     // Receivers listen to all universes
-    for i in (BASE_UNIVERSE as u16)..((SND_THREADS as u16) + (BASE_UNIVERSE as u16)) {
+    for i in BASE_UNIVERSE..((SND_THREADS as u16) + BASE_UNIVERSE) {
         dmx_recv.listen_universes(&[i]).unwrap();
     }
 
@@ -2817,7 +2817,7 @@ fn test_receiver_source_limit_2_termination_check() {
     .unwrap();
 
     // Receivers listen to all universes
-    for i in (BASE_UNIVERSE as u16)..((SND_THREADS as u16) + (BASE_UNIVERSE as u16)) {
+    for i in BASE_UNIVERSE..((SND_THREADS as u16) + BASE_UNIVERSE) {
         dmx_recv.listen_universes(&[i]).unwrap();
     }
 
@@ -2839,7 +2839,7 @@ fn test_receiver_source_limit_2_termination_check() {
     let new_src_thread = thread::spawn(move || {
         let ip: SocketAddr = SocketAddr::new(
             IpAddr::V4(TEST_NETWORK_INTERFACE_IPV4[0].parse().unwrap()),
-            ACN_SDT_MULTICAST_PORT + 1 + (3 as u16),
+            ACN_SDT_MULTICAST_PORT + 1 + 3_u16,
         );
         let mut src = SacnSource::with_ip(&format!("Source {}", 3), ip).unwrap();
 

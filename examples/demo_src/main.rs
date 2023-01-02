@@ -487,7 +487,7 @@ fn handle_data_over_time_option(src: &mut SacnSource, split_input: Vec<&str>) ->
     let start_time = Instant::now();
 
     while start_time.elapsed() < duration {
-        let x: f64 = (start_time.elapsed().as_millis() as f64) / (1000 as f64);
+        let x: f64 = (start_time.elapsed().as_millis() as f64) / 1000_f64;
         let d: u8 = (255.0 * x.sin()) as u8;
 
         let mut data: [u8; 513] = [d; 513];

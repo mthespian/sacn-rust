@@ -1603,7 +1603,7 @@ mod test {
 
         assert!(res.as_inet6().unwrap().ip().is_multicast());
 
-        let low_16: u16 = (((val / 256) as u16) << 8) | ((val % 256) as u16);
+        let low_16: u16 = ((val / 256) << 8) | (val % 256);
 
         assert_eq!(
             res.as_inet6().unwrap(),
@@ -1623,7 +1623,7 @@ mod test {
 
         assert!(res.as_inet6().unwrap().ip().is_multicast());
 
-        let low_16: u16 = (((val / 256) as u16) << 8) | ((val % 256) as u16);
+        let low_16: u16 = ((val / 256) << 8) | (val % 256);
 
         assert_eq!(
             res.as_inet6().unwrap(),
@@ -1642,8 +1642,8 @@ mod test {
 
         assert!(res.as_inet6().unwrap().ip().is_multicast());
 
-        let low_16: u16 = (((E131_MAX_MULTICAST_UNIVERSE / 256) as u16) << 8)
-            | ((E131_MAX_MULTICAST_UNIVERSE % 256) as u16);
+        let low_16: u16 = ((E131_MAX_MULTICAST_UNIVERSE / 256) << 8)
+            | (E131_MAX_MULTICAST_UNIVERSE % 256);
 
         assert_eq!(
             res.as_inet6().unwrap(),
@@ -1662,8 +1662,8 @@ mod test {
 
         assert!(res.as_inet6().unwrap().ip().is_multicast());
 
-        let low_16: u16 = (((E131_MIN_MULTICAST_UNIVERSE / 256) as u16) << 8)
-            | ((E131_MIN_MULTICAST_UNIVERSE % 256) as u16);
+        let low_16: u16 = ((E131_MIN_MULTICAST_UNIVERSE / 256) << 8)
+            | (E131_MIN_MULTICAST_UNIVERSE % 256);
 
         assert_eq!(
             res.as_inet6().unwrap(),

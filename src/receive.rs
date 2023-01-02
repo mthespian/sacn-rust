@@ -2736,7 +2736,7 @@ mod test {
                 generate_data_packet_framing_layer_seq_num(UNIVERSE1, i),
             );
 
-            let diff: i16 = ((i as i16) - (LAST_SEQ_NUM as i16)) as i16;
+            let diff: i16 = ((i as i16) - (LAST_SEQ_NUM as i16));
 
             match res {
                 Err(Error(OutOfSequence(_), _)) => {
@@ -2848,7 +2848,7 @@ mod test {
             );
 
             // Cannot do straight 8 bit arithmetic that relies on underflows/overflows as this is undefined behaviour in rust forbidden by the compiler.
-            let diff: i16 = ((i as i16) - (LAST_SEQ_NUM as i16)) as i16;
+            let diff: i16 = ((i as i16) - (LAST_SEQ_NUM as i16));
 
             match res {
                 Err(Error(OutOfSequence(_), _)) => {

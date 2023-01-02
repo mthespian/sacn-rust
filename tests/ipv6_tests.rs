@@ -738,7 +738,7 @@ mod sacn_ipv6_multicast_test {
                 .unwrap();
 
                 // Receivers listen to all universes
-                for i in (BASE_UNIVERSE as u16)..((SND_THREADS as u16) + (BASE_UNIVERSE as u16)) {
+                for i in BASE_UNIVERSE..((SND_THREADS as u16) + BASE_UNIVERSE) {
                     dmx_recv.listen_universes(&[i]).unwrap();
                 }
 
@@ -1590,7 +1590,7 @@ mod sacn_ipv6_multicast_test {
                 .unwrap();
         ipv4_source.set_preview_mode(false).unwrap();
         ipv4_source.set_multicast_loop_v4(true).unwrap();
-        ipv4_source.register_universes(&[universe as u16]).unwrap();
+        ipv4_source.register_universes(&[universe]).unwrap();
 
         // Create and setup the ipv4 receiver socket.
         let ipv4_recv = Socket::new(Domain::ipv4(), Type::dgram(), None).unwrap();
