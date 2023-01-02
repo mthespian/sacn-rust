@@ -2104,7 +2104,7 @@ fn test_universe_discovery_one_universe_one_source_ipv4() {
 
         let discovered = dmx_recv.get_discovered_sources();
 
-        if discovered.len() > 0 {
+        if !discovered.is_empty() {
             assert_eq!(discovered.len(), 1);
             assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
             let universes = discovered[0].get_all_universes();
@@ -2387,7 +2387,7 @@ fn test_universe_discovery_multiple_universe_one_source_ipv4() {
 
         let discovered = dmx_recv.get_discovered_sources();
 
-        if discovered.len() > 0 {
+        if !discovered.is_empty() {
             assert_eq!(discovered.len(), 1);
             assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
 
@@ -2484,7 +2484,7 @@ fn test_universe_discovery_multiple_pages_one_source_ipv4() {
 
         let discovered = dmx_recv.get_discovered_sources();
 
-        if discovered.len() > 0 {
+        if !discovered.is_empty() {
             assert_eq!(discovered.len(), 1);
             assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
             let universes = discovered[0].get_all_universes();

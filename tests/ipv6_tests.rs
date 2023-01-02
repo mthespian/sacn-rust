@@ -870,7 +870,7 @@ mod sacn_ipv6_multicast_test {
 
             let discovered = dmx_recv.get_discovered_sources();
 
-            if discovered.len() > 0 {
+            if !discovered.is_empty() {
                 assert_eq!(discovered.len(), 1);
                 assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
                 let universes = discovered[0].get_all_universes();
@@ -961,7 +961,7 @@ mod sacn_ipv6_multicast_test {
 
             let discovered = dmx_recv.get_discovered_sources();
 
-            if discovered.len() > 0 {
+            if !discovered.is_empty() {
                 assert_eq!(discovered.len(), 1);
                 assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
 
@@ -1058,7 +1058,7 @@ mod sacn_ipv6_multicast_test {
 
             let discovered = dmx_recv.get_discovered_sources();
 
-            if discovered.len() > 0 {
+            if !discovered.is_empty() {
                 assert_eq!(discovered.len(), 1);
                 assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
                 let universes = discovered[0].get_all_universes();

@@ -906,7 +906,7 @@ impl SacnReceiver {
         )?;
 
         let res = self.rtrv_waiting_data(sync_pkt.synchronization_address);
-        if res.len() == 0 {
+        if res.is_empty() {
             Ok(None)
         } else {
             Ok(Some(res))
@@ -2147,8 +2147,8 @@ pub fn discard_lowest_priority_then_previous(i: &DMXData, n: &DMXData) -> Result
 /// If this doesn't hold an error will be returned.
 /// Other merge functions may allow merging different start codes or not check for them.
 pub fn htp_dmx_merge(i: &DMXData, n: &DMXData) -> Result<DMXData> {
-    if i.values.len() < 1
-        || n.values.len() < 1
+    if i.values.is_empty()
+        || n.values.is_empty()
         || i.universe != n.universe
         || i.values[0] != n.values[0]
         || i.sync_uni != n.sync_uni

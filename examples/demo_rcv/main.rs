@@ -194,7 +194,7 @@ fn handle_input(dmx_recv: &mut SacnReceiver) -> Result<bool> {
 
             let split_input: Vec<&str> = input.split_whitespace().collect();
 
-            if split_input.len() < 1 {
+            if split_input.is_empty() {
                 display_help();
                 return Ok(true);
             }
@@ -418,7 +418,7 @@ fn write_to_file(file: &mut Box<File>, data: Vec<DMXData>, data_id: u64) -> Resu
 fn create_values_str(values: Vec<u8>) -> Result<String> {
     let mut res: String = "".to_string();
 
-    if values.len() < 1 {
+    if values.is_empty() {
         return Ok(res);
     }
 

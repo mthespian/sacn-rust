@@ -665,7 +665,7 @@ impl SacnSourceInternal {
     fn register_universe(&mut self, universe: u16) -> Result<()> {
         is_universe_in_range(universe)?;
 
-        if self.universes.len() == 0 {
+        if self.universes.is_empty() {
             self.universes.push(universe);
         } else {
             match self.universes.binary_search(&universe) {
@@ -777,7 +777,7 @@ impl SacnSourceInternal {
             ));
         }
 
-        if data.len() == 0 {
+        if data.is_empty() {
             bail!(std::io::Error::new(
                 std::io::ErrorKind::InvalidInput,
                 "Must provide data to send, data.len() == 0"
