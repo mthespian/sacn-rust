@@ -1068,9 +1068,9 @@ impl Drop for SacnReceiver {
 /// srcs: The Vec of DiscoveredSacnSources to search.
 /// name: The human readable name of the source to find.
 ///
-fn find_discovered_src(srcs: &Vec<DiscoveredSacnSource>, name: &String) -> Option<usize> {
-    for i in 0..srcs.len() {
-        if srcs[i].name == *name {
+fn find_discovered_src(srcs: &[DiscoveredSacnSource], name: &String) -> Option<usize> {
+  for (i, src) in srcs.iter().enumerate() {
+        if src.name == *name {
             return Some(i);
         }
     }

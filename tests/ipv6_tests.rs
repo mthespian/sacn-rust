@@ -697,10 +697,10 @@ mod sacn_ipv6_multicast_test {
 
         const BASE_UNIVERSE: u16 = 2;
 
-        for i in 0..SND_THREADS {
+        for (i, snd_datum) in snd_data.iter().enumerate().take(SND_THREADS) {
             let tx = snd_tx.clone();
 
-            let data = snd_data[i].clone();
+            let data = snd_datum.clone();
 
             snd_threads.push(thread::spawn(move || {
                 let ip: SocketAddr = SocketAddr::new(
@@ -723,14 +723,14 @@ mod sacn_ipv6_multicast_test {
             }));
         }
 
-        for i in 0..RCV_THREADS {
+        for network_interface in TEST_NETWORK_INTERFACE_IPV6.iter().take(RCV_THREADS) {
             let tx = rcv_tx.clone();
 
             rcv_threads.push(thread::spawn(move || {
                 // Port kept the same so must use multiple IP's.
                 let mut dmx_recv = SacnReceiver::with_ip(
                     SocketAddr::new(
-                        IpAddr::V6(TEST_NETWORK_INTERFACE_IPV6[i].parse().unwrap()),
+                        IpAddr::V6(network_interface.parse().unwrap()),
                         ACN_SDT_MULTICAST_PORT,
                     ),
                     None,
@@ -810,7 +810,7 @@ mod sacn_ipv6_multicast_test {
 
         let mut snd_threads = Vec::new();
 
-        for i in 0..SND_THREADS {
+        for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
             let tx = snd_tx.clone();
 
             snd_threads.push(thread::spawn(move || {
@@ -819,7 +819,7 @@ mod sacn_ipv6_multicast_test {
                     ACN_SDT_MULTICAST_PORT + 1 + (i as u16),
                 );
 
-                let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+                let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
                 let mut universes: Vec<u16> = Vec::new();
                 for j in 0..UNIVERSE_COUNT {
@@ -875,8 +875,8 @@ mod sacn_ipv6_multicast_test {
                 assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
                 let universes = discovered[0].get_all_universes();
                 assert_eq!(universes.len(), UNIVERSE_COUNT);
-                for j in 0..UNIVERSE_COUNT {
-                    assert_eq!(universes[j], (j as u16) + BASE_UNIVERSE);
+                for (j, universe) in universes.iter().enumerate().take(UNIVERSE_COUNT) {
+                    assert_eq!(*universe, (j as u16) + BASE_UNIVERSE);
                 }
                 break;
             }
@@ -901,7 +901,7 @@ mod sacn_ipv6_multicast_test {
 
         let mut snd_threads = Vec::new();
 
-        for i in 0..SND_THREADS {
+        for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
             let tx = snd_tx.clone();
 
             snd_threads.push(thread::spawn(move || {
@@ -910,7 +910,7 @@ mod sacn_ipv6_multicast_test {
                     ACN_SDT_MULTICAST_PORT + 1 + (i as u16),
                 );
 
-                let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+                let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
                 let mut universes: Vec<u16> = Vec::new();
                 for j in 0..UNIVERSE_COUNT {
@@ -967,8 +967,8 @@ mod sacn_ipv6_multicast_test {
 
                 let universes = discovered[0].get_all_universes();
                 assert_eq!(universes.len(), UNIVERSE_COUNT);
-                for j in 0..UNIVERSE_COUNT {
-                    assert_eq!(universes[j], (j as u16) + BASE_UNIVERSE);
+                for (j, universe) in universes.iter().enumerate().take(UNIVERSE_COUNT) {
+                    assert_eq!(*universe, (j as u16) + BASE_UNIVERSE);
                 }
                 break;
             }
@@ -993,7 +993,7 @@ mod sacn_ipv6_multicast_test {
 
         let mut snd_threads = Vec::new();
 
-        for i in 0..SND_THREADS {
+        for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
             let tx = snd_tx.clone();
 
             snd_threads.push(thread::spawn(move || {
@@ -1002,7 +1002,7 @@ mod sacn_ipv6_multicast_test {
                     ACN_SDT_MULTICAST_PORT + 1 + (i as u16),
                 );
 
-                let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+                let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
                 src.set_is_sending_discovery(false); // To stop universe discovery packets being sent until all universes are registered.
 
@@ -1063,8 +1063,8 @@ mod sacn_ipv6_multicast_test {
                 assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
                 let universes = discovered[0].get_all_universes();
                 assert_eq!(universes.len(), UNIVERSE_COUNT);
-                for j in 0..UNIVERSE_COUNT {
-                    assert_eq!(universes[j], (j as u16) + BASE_UNIVERSE);
+                for (j, universe) in universes.iter().enumerate().take(UNIVERSE_COUNT) {
+                    assert_eq!(*universe, (j as u16) + BASE_UNIVERSE);
                 }
                 break;
             }

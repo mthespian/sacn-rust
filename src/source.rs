@@ -762,7 +762,7 @@ impl SacnSourceInternal {
     ///
     /// Io: Returned if the data fails to be sent on the socket, see send_to(fn.send_to.Socket).
     ///
-    fn send(
+    #[allow(clippy::needless_range_loop)] fn send(
         &self,
         universes: &[u16],
         data: &[u8],

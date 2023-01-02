@@ -1537,10 +1537,10 @@ fn test_two_senders_two_recv_multicast_ipv4() {
 
     const BASE_UNIVERSE: u16 = 2;
 
-    for i in 0..SND_THREADS {
+    for (i, snd_datum) in snd_data.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
-        let data = snd_data[i].clone();
+        let data = snd_datum.clone();
 
         snd_threads.push(thread::spawn(move || {
             let ip: SocketAddr = SocketAddr::new(
@@ -1563,14 +1563,14 @@ fn test_two_senders_two_recv_multicast_ipv4() {
         }));
     }
 
-    for i in 0..RCV_THREADS {
+    for network_interface in TEST_NETWORK_INTERFACE_IPV4.iter().take(RCV_THREADS) {
         let tx = rcv_tx.clone();
 
         rcv_threads.push(thread::spawn(move || {
             // Port kept the same so must use multiple IP's.
             let mut dmx_recv = SacnReceiver::with_ip(
                 SocketAddr::new(
-                    IpAddr::V4(TEST_NETWORK_INTERFACE_IPV4[i].parse().unwrap()),
+                    IpAddr::V4(network_interface.parse().unwrap()),
                     ACN_SDT_MULTICAST_PORT,
                 ),
                 None,
@@ -1669,10 +1669,10 @@ fn test_three_senders_two_recv_multicast_ipv4() {
 
     const BASE_UNIVERSE: u16 = 2;
 
-    for i in 0..SND_THREADS {
+    for (i, snd_datum) in snd_data.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
-        let data = snd_data[i].clone();
+        let data = snd_datum.clone();
 
         snd_threads.push(thread::spawn(move || {
             let ip: SocketAddr = SocketAddr::new(
@@ -1695,14 +1695,14 @@ fn test_three_senders_two_recv_multicast_ipv4() {
         }));
     }
 
-    for i in 0..RCV_THREADS {
+    for network_interface in TEST_NETWORK_INTERFACE_IPV4.iter().take(RCV_THREADS) {
         let tx = rcv_tx.clone();
 
         rcv_threads.push(thread::spawn(move || {
             // Port kept the same so must use multiple IP's.
             let mut dmx_recv = SacnReceiver::with_ip(
                 SocketAddr::new(
-                    IpAddr::V4(TEST_NETWORK_INTERFACE_IPV4[i].parse().unwrap()),
+                    IpAddr::V4(network_interface.parse().unwrap()),
                     ACN_SDT_MULTICAST_PORT,
                 ),
                 None,
@@ -1801,10 +1801,10 @@ fn test_two_senders_three_recv_multicast_ipv4() {
 
     const BASE_UNIVERSE: u16 = 2;
 
-    for i in 0..SND_THREADS {
+    for (i, snd_datum) in snd_data.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
-        let data = snd_data[i].clone();
+        let data = snd_datum.clone();
 
         snd_threads.push(thread::spawn(move || {
             let ip: SocketAddr = SocketAddr::new(
@@ -1827,14 +1827,14 @@ fn test_two_senders_three_recv_multicast_ipv4() {
         }));
     }
 
-    for i in 0..RCV_THREADS {
+    for network_interface in TEST_NETWORK_INTERFACE_IPV4.iter().take(RCV_THREADS) {
         let tx = rcv_tx.clone();
 
         rcv_threads.push(thread::spawn(move || {
             // Port kept the same so must use multiple IP's.
             let mut dmx_recv = SacnReceiver::with_ip(
                 SocketAddr::new(
-                    IpAddr::V4(TEST_NETWORK_INTERFACE_IPV4[i].parse().unwrap()),
+                    IpAddr::V4(network_interface.parse().unwrap()),
                     ACN_SDT_MULTICAST_PORT,
                 ),
                 None,
@@ -1933,10 +1933,10 @@ fn test_three_senders_three_recv_multicast_ipv4() {
 
     const BASE_UNIVERSE: u16 = 2;
 
-    for i in 0..SND_THREADS {
+    for (i, snd_datum) in snd_data.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
-        let data = snd_data[i].clone();
+        let data = snd_datum.clone();
 
         snd_threads.push(thread::spawn(move || {
             let ip: SocketAddr = SocketAddr::new(
@@ -1959,14 +1959,14 @@ fn test_three_senders_three_recv_multicast_ipv4() {
         }));
     }
 
-    for i in 0..RCV_THREADS {
+    for network_interface in TEST_NETWORK_INTERFACE_IPV4.iter().take(RCV_THREADS) {
         let tx = rcv_tx.clone();
 
         rcv_threads.push(thread::spawn(move || {
             // Port kept the same so must use multiple IP's.
             let mut dmx_recv = SacnReceiver::with_ip(
                 SocketAddr::new(
-                    IpAddr::V4(TEST_NETWORK_INTERFACE_IPV4[i].parse().unwrap()),
+                    IpAddr::V4(network_interface.parse().unwrap()),
                     ACN_SDT_MULTICAST_PORT,
                 ),
                 None,
@@ -2044,7 +2044,7 @@ fn test_universe_discovery_one_universe_one_source_ipv4() {
 
     let mut snd_threads = Vec::new();
 
-    for i in 0..SND_THREADS {
+    for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
         snd_threads.push(thread::spawn(move || {
@@ -2053,7 +2053,7 @@ fn test_universe_discovery_one_universe_one_source_ipv4() {
                 ACN_SDT_MULTICAST_PORT + 1 + (i as u16),
             );
 
-            let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+            let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
             let mut universes: Vec<u16> = Vec::new();
             for j in 0..UNIVERSE_COUNT {
@@ -2109,8 +2109,8 @@ fn test_universe_discovery_one_universe_one_source_ipv4() {
             assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
             let universes = discovered[0].get_all_universes();
             assert_eq!(universes.len(), UNIVERSE_COUNT);
-            for j in 0..UNIVERSE_COUNT {
-                assert_eq!(universes[j], (j as u16) + BASE_UNIVERSE);
+            for (j, universe) in universes.iter().enumerate().take(UNIVERSE_COUNT) {
+                assert_eq!(*universe, (j as u16) + BASE_UNIVERSE);
             }
             break;
         }
@@ -2137,7 +2137,7 @@ fn test_universe_discovery_interval_ipv4() {
 
     let mut snd_threads = Vec::new();
 
-    for i in 0..SND_THREADS {
+    for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
         snd_threads.push(thread::spawn(move || {
@@ -2148,7 +2148,7 @@ fn test_universe_discovery_interval_ipv4() {
 
             tx.send(()).unwrap(); // Force the send thread to wait before creating the sender, should sync once the receiver has been created.
 
-            let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+            let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
             src.register_universes(&[BASE_UNIVERSE]).unwrap();
 
@@ -2234,7 +2234,7 @@ fn test_universe_discovery_interval_with_updates_ipv4() {
 
     let mut snd_threads = Vec::new();
 
-    for i in 0..SND_THREADS {
+    for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
         snd_threads.push(thread::spawn(move || {
@@ -2245,7 +2245,7 @@ fn test_universe_discovery_interval_with_updates_ipv4() {
 
             tx.send(()).unwrap(); // Force the send thread to wait before creating the sender, should sync once the receiver has been created.
 
-            let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+            let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
             for _ in 0..UNIVERSES_TO_REGISTER {
                 src.register_universes(&[BASE_UNIVERSE]).unwrap();
@@ -2327,7 +2327,7 @@ fn test_universe_discovery_multiple_universe_one_source_ipv4() {
 
     let mut snd_threads = Vec::new();
 
-    for i in 0..SND_THREADS {
+    for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
         snd_threads.push(thread::spawn(move || {
@@ -2336,7 +2336,7 @@ fn test_universe_discovery_multiple_universe_one_source_ipv4() {
                 ACN_SDT_MULTICAST_PORT + 1 + (i as u16),
             );
 
-            let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+            let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
             let mut universes: Vec<u16> = Vec::new();
             for j in 0..UNIVERSE_COUNT {
@@ -2393,8 +2393,8 @@ fn test_universe_discovery_multiple_universe_one_source_ipv4() {
 
             let universes = discovered[0].get_all_universes();
             assert_eq!(universes.len(), UNIVERSE_COUNT);
-            for j in 0..UNIVERSE_COUNT {
-                assert_eq!(universes[j], (j as u16) + BASE_UNIVERSE);
+            for (j, universe) in universes.iter().enumerate().take(UNIVERSE_COUNT) {
+                assert_eq!(*universe, (j as u16) + BASE_UNIVERSE);
             }
             break;
         }
@@ -2419,7 +2419,7 @@ fn test_universe_discovery_multiple_pages_one_source_ipv4() {
 
     let mut snd_threads = Vec::new();
 
-    for i in 0..SND_THREADS {
+    for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
         snd_threads.push(thread::spawn(move || {
@@ -2428,7 +2428,7 @@ fn test_universe_discovery_multiple_pages_one_source_ipv4() {
                 ACN_SDT_MULTICAST_PORT + 1 + (i as u16),
             );
 
-            let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+            let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
             src.set_is_sending_discovery(false); // To stop universe discovery packets being sent until all universes are registered.
 
@@ -2489,8 +2489,8 @@ fn test_universe_discovery_multiple_pages_one_source_ipv4() {
             assert_eq!(discovered[0].name, SOURCE_NAMES[0]);
             let universes = discovered[0].get_all_universes();
             assert_eq!(universes.len(), UNIVERSE_COUNT);
-            for j in 0..UNIVERSE_COUNT {
-                assert_eq!(universes[j], (j as u16) + BASE_UNIVERSE);
+            for (j, universe) in universes.iter().enumerate().take(UNIVERSE_COUNT) {
+                assert_eq!(*universe, (j as u16) + BASE_UNIVERSE);
             }
             break;
         }
@@ -2515,7 +2515,7 @@ fn test_universe_discovery_no_universes_ipv4() {
 
     let mut snd_threads = Vec::new();
 
-    for i in 0..SND_THREADS {
+    for (i, source_name) in SOURCE_NAMES.iter().enumerate().take(SND_THREADS) {
         let tx = snd_tx.clone();
 
         snd_threads.push(thread::spawn(move || {
@@ -2526,7 +2526,7 @@ fn test_universe_discovery_no_universes_ipv4() {
 
             tx.send(()).unwrap(); // Force the send thread to wait before creating the sender, should sync once the receiver has been created.
 
-            let mut src = SacnSource::with_ip(SOURCE_NAMES[i], ip).unwrap();
+            let mut src = SacnSource::with_ip(source_name, ip).unwrap();
 
             // Explicitly make sure that the src is sending discovery packets (by default not).
             src.set_is_sending_discovery(true);
@@ -2887,14 +2887,14 @@ fn test_preview_data_2_receiver_1_sender() {
         "Number of test network interface ips less than number of recv threads!"
     );
 
-    for i in 0..RCV_THREADS {
+    for (i, network_interface) in TEST_NETWORK_INTERFACE_IPV4.iter().enumerate().take(RCV_THREADS) {
         let tx = rcv_tx.clone();
 
         rcv_threads.push(thread::spawn(move || {
             // Port kept the same so must use multiple IP's.
             let mut dmx_recv = SacnReceiver::with_ip(
                 SocketAddr::new(
-                    IpAddr::V4(TEST_NETWORK_INTERFACE_IPV4[i].parse().unwrap()),
+                    IpAddr::V4(network_interface.parse().unwrap()),
                     ACN_SDT_MULTICAST_PORT,
                 ),
                 None,

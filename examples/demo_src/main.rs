@@ -378,8 +378,8 @@ fn handle_data_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result<bo
 
     let mut data: Vec<u8> = Vec::new();
 
-    for i in 4..split_input.len() {
-        data.push(split_input[i].parse().unwrap());
+    for datum in split_input.iter().skip(4) {
+        data.push(datum.parse().unwrap());
     }
 
     if sync_uni == 0 {
@@ -427,8 +427,8 @@ fn handle_unicast_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result
 
     let mut data: Vec<u8> = Vec::new();
 
-    for i in 5..split_input.len() {
-        data.push(split_input[i].parse().unwrap());
+    for datum in split_input.iter().skip(5) {
+        data.push(datum.parse().unwrap());
     }
 
     if sync_uni == 0 {
@@ -644,7 +644,7 @@ fn run_test_moving_channel_preset(src: &mut SacnSource, universe: u16) -> Result
 
     while start_time.elapsed() < TEST_PRESET_DURATION {
         // Use a 0 startcode so skip first value.
-        for i in 1..data.len() {
+        #[allow(clippy::needless_range_loop)] for i in 1..data.len() {
             let x: f64 = ((start_time.elapsed().as_millis() as f64)
                 + (i as f64) * MOVING_CHANNEL_TEST_WAVE_OFFSET)
                 / MOVING_CHANNEL_TEST_WAVE_PERIOD;
