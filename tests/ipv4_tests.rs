@@ -1196,7 +1196,7 @@ fn test_send_recv_across_universe_unicast_ipv4() {
             &TEST_DATA_MULTIPLE_UNIVERSE,
             Some(priority),
             Some(
-                SocketAddr::new(Ipv4Addr::new(127, 0, 0, 1).into(), ACN_SDT_MULTICAST_PORT).into(),
+                SocketAddr::new(Ipv4Addr::new(127, 0, 0, 1).into(), ACN_SDT_MULTICAST_PORT),
             ),
             Some(UNIVERSES[0]),
         )
@@ -1204,7 +1204,7 @@ fn test_send_recv_across_universe_unicast_ipv4() {
     sleep(Duration::from_millis(500)); // Small delay to allow the data packets to get through as per NSI-E1.31-2018 Appendix B.1 recommendation.
     src.send_sync_packet(
         UNIVERSES[0],
-        Some(SocketAddr::new(Ipv4Addr::new(127, 0, 0, 1).into(), ACN_SDT_MULTICAST_PORT).into()),
+        Some(SocketAddr::new(Ipv4Addr::new(127, 0, 0, 1).into(), ACN_SDT_MULTICAST_PORT)),
     )
     .unwrap();
 

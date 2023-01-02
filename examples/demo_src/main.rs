@@ -437,7 +437,7 @@ fn handle_unicast_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result
             &data,
             Some(priority),
             Some(
-                SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT).into(),
+                SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT),
             ),
             None,
         )?;
@@ -447,7 +447,7 @@ fn handle_unicast_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result
             &data,
             Some(priority),
             Some(
-                SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT).into(),
+                SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT),
             ),
             Some(sync_uni),
         )?;
@@ -1166,7 +1166,7 @@ fn handle_input(src: &mut SacnSource) -> Result<bool> {
                     let dst_ip = split_input[2];
                     src.send_sync_packet(
                         universe,
-                        Some(SocketAddr::from_str(dst_ip).unwrap().into()),
+                        Some(SocketAddr::from_str(dst_ip).unwrap()),
                     )?;
                     Ok(true)
                 }

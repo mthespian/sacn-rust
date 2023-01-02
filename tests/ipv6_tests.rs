@@ -1881,8 +1881,7 @@ mod sacn_ipv6_unicast_test {
                     SocketAddr::new(
                         IpAddr::V6(TEST_NETWORK_INTERFACE_IPV6[0].parse().unwrap()),
                         ACN_SDT_MULTICAST_PORT,
-                    )
-                    .into(),
+                    ),
                 ),
                 Some(UNIVERSES[0]),
             )
@@ -1894,8 +1893,7 @@ mod sacn_ipv6_unicast_test {
                 SocketAddr::new(
                     IpAddr::V6(TEST_NETWORK_INTERFACE_IPV6[0].parse().unwrap()),
                     ACN_SDT_MULTICAST_PORT,
-                )
-                .into(),
+                ),
             ),
         )
         .unwrap();
