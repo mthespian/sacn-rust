@@ -374,7 +374,7 @@ pub fn universe_to_ipv6_multicast_addr(universe: u16) -> Result<SockAddr> {
 ///
 pub fn is_universe_in_range(universe: u16) -> Result<()> {
     if (universe != E131_DISCOVERY_UNIVERSE)
-        && (universe < E131_MIN_MULTICAST_UNIVERSE || universe > E131_MAX_MULTICAST_UNIVERSE)
+        && !(E131_MIN_MULTICAST_UNIVERSE..=E131_MAX_MULTICAST_UNIVERSE).contains(&universe)
     {
         bail!(ErrorKind::IllegalUniverse(
             format!(
@@ -1121,8 +1121,7 @@ impl Pdu for SynchronizationPacketFramingLayer {
                 ..E131_SYNC_FRAMING_LAYER_RESERVE_FIELD_INDEX],
         );
 
-        if synchronization_address > E131_MAX_MULTICAST_UNIVERSE
-            || synchronization_address < E131_MIN_MULTICAST_UNIVERSE
+        if !(E131_MIN_MULTICAST_UNIVERSE..=E131_MAX_MULTICAST_UNIVERSE).contains(&synchronization_address)
         {
             bail!(ErrorKind::SacnParsePackError(
                 sacn_parse_pack_error::ErrorKind::ParseInvalidUniverse(

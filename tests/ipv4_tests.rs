@@ -4003,7 +4003,7 @@ fn generate_data_packet_raw(
     dmx_data: Vec<u8>,
 ) -> Vec<u8> {
     assert!(
-        universe >= E131_MIN_MULTICAST_UNIVERSE && universe <= E131_MAX_MULTICAST_UNIVERSE,
+        (E131_MIN_MULTICAST_UNIVERSE..=E131_MAX_MULTICAST_UNIVERSE).contains(&universe),
         "Generated data packet universe out of range"
     );
     assert!(
