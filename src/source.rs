@@ -770,7 +770,7 @@ impl SacnSourceInternal {
         dst_ip: Option<SocketAddr>,
         synchronisation_addr: Option<u16>,
     ) -> Result<()> {
-        if self.running == false {
+        if !self.running {
             // Indicates that this sender has been terminated.
             bail!(ErrorKind::SenderAlreadyTerminated(
                 "Attempted to send".to_string()
