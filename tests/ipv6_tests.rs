@@ -414,7 +414,7 @@ mod sacn_ipv6_multicast_test {
 
         src.register_universe(universe).unwrap();
 
-        let _ = src
+        src
             .send(
                 &[universe],
                 &TEST_DATA_SINGLE_UNIVERSE,
@@ -1178,7 +1178,7 @@ mod sacn_ipv6_multicast_test {
 
             src.register_universe(universe).unwrap();
 
-            let _ = src
+            src
                 .send(
                     &[universe],
                     &TEST_DATA_SINGLE_UNIVERSE,
@@ -1200,7 +1200,7 @@ mod sacn_ipv6_multicast_test {
 
             src.register_universe(universe).unwrap();
 
-            let _ = src
+            src
                 .send(
                     &[universe],
                     &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
@@ -1797,7 +1797,7 @@ mod sacn_ipv6_unicast_test {
             ACN_SDT_MULTICAST_PORT,
         );
 
-        let _ = src
+        src
             .send(
                 &[universe],
                 &TEST_DATA_SINGLE_UNIVERSE,
@@ -1872,7 +1872,7 @@ mod sacn_ipv6_unicast_test {
 
         src.register_universes(&UNIVERSES).unwrap();
 
-        let _ = src
+        src
             .send(
                 &UNIVERSES,
                 &TEST_DATA_MULTIPLE_UNIVERSE,

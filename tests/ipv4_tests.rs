@@ -445,7 +445,7 @@ fn test_send_recv_single_universe_unicast_ipv4() {
 
     let dst_ip: SocketAddr = SocketAddr::new(Ipv4Addr::LOCALHOST.into(), ACN_SDT_MULTICAST_PORT);
 
-    let _ = src
+    src
         .send(
             &[universe],
             &TEST_DATA_SINGLE_UNIVERSE,
@@ -1190,7 +1190,7 @@ fn test_send_recv_across_universe_unicast_ipv4() {
 
     src.register_universes(&UNIVERSES).unwrap();
 
-    let _ = src
+    src
         .send(
             &UNIVERSES,
             &TEST_DATA_MULTIPLE_UNIVERSE,
@@ -1270,7 +1270,7 @@ fn test_two_senders_one_recv_different_universes_multicast_ipv4() {
 
         src.register_universe(universe_1).unwrap();
 
-        let _ = src
+        src
             .send(
                 &[universe_1],
                 &TEST_DATA_SINGLE_UNIVERSE,
@@ -1292,7 +1292,7 @@ fn test_two_senders_one_recv_different_universes_multicast_ipv4() {
 
         src.register_universe(universe_2).unwrap();
 
-        let _ = src
+        src
             .send(
                 &[universe_2],
                 &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
@@ -1346,7 +1346,7 @@ fn test_two_senders_one_recv_same_universe_no_sync_multicast_ipv4() {
 
         src.register_universe(universe).unwrap();
 
-        let _ = src
+        src
             .send(
                 &[universe],
                 &TEST_DATA_SINGLE_UNIVERSE,
@@ -1368,7 +1368,7 @@ fn test_two_senders_one_recv_same_universe_no_sync_multicast_ipv4() {
 
         src.register_universe(universe).unwrap();
 
-        let _ = src
+        src
             .send(
                 &[universe],
                 &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
