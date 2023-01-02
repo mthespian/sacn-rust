@@ -363,7 +363,7 @@ fn handle_input(dmx_recv: &mut SacnReceiver) -> Result<bool> {
 
                     let mut boxed_file = Box::new(out_file);
 
-                    write!(boxed_file, "{}\n", WRITE_TO_FILE_HEADERS)?;
+                    writeln!(boxed_file, "{}", WRITE_TO_FILE_HEADERS)?;
 
                     for i in 0..count {
                         let res: Vec<DMXData> = dmx_recv.recv(timeout).unwrap();
@@ -400,9 +400,9 @@ fn write_to_file(file: &mut Box<File>, data: Vec<DMXData>, data_id: u64) -> Resu
         let values_str = create_values_str(d.values)?;
 
         // Note that the formatting string literal must be here and cannot be subsituted using const.
-        write!(
+        writeln!(
             *file,
-            "{},{},{},{},{},{}\n",
+            "{},{},{},{},{},{}",
             data_id, d.universe, d.sync_uni, d.priority, d.preview, values_str
         )?;
     }
