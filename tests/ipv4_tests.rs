@@ -2080,7 +2080,7 @@ fn test_universe_discovery_one_universe_one_source_ipv4() {
         match result {
             Err(e) => {
                 match e.kind() {
-                    &ErrorKind::Io(ref s) => {
+                    ErrorKind::Io(s) => {
                         match s.kind() {
                             std::io::ErrorKind::WouldBlock => {
                                 // Expected to timeout / would block.
@@ -2363,7 +2363,7 @@ fn test_universe_discovery_multiple_universe_one_source_ipv4() {
         match result {
             Err(e) => {
                 match e.kind() {
-                    &ErrorKind::Io(ref s) => {
+                    ErrorKind::Io(s) => {
                         match s.kind() {
                             std::io::ErrorKind::WouldBlock => {
                                 // Expected to timeout / would block.
@@ -2460,7 +2460,7 @@ fn test_universe_discovery_multiple_pages_one_source_ipv4() {
         match result {
             Err(e) => {
                 match e.kind() {
-                    &ErrorKind::Io(ref s) => {
+                    ErrorKind::Io(s) => {
                         match s.kind() {
                             std::io::ErrorKind::WouldBlock => {
                                 // Expected to timeout / would block.
@@ -2936,7 +2936,7 @@ fn test_preview_data_2_receiver_1_sender() {
                 match dmx_recv.recv(TIMEOUT) {
                     Err(e) => {
                         match e.kind() {
-                            &ErrorKind::Io(ref s) => {
+                            ErrorKind::Io(s) => {
                                 match s.kind() {
                                     std::io::ErrorKind::WouldBlock => {
                                         // Expected to timeout / would block.

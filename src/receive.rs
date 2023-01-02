@@ -604,7 +604,7 @@ impl SacnReceiver {
             }
             Err(err) => {
                 match err.kind() {
-                    &ErrorKind::Io(ref s) => {
+                    ErrorKind::Io(s) => {
                         match s.kind() {
                             // Windows and Unix use different error types (WouldBlock/TimedOut) for the same error.
                             std::io::ErrorKind::WouldBlock | std::io::ErrorKind::TimedOut => {

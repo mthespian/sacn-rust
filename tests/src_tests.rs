@@ -342,7 +342,7 @@ fn test_send_without_registering() {
             assert!(false, "Source didn't prevent sending without registering")
         }
         Err(e) => match e.kind() {
-            &ErrorKind::UniverseNotRegistered(ref _s) => assert!(true),
+            ErrorKind::UniverseNotRegistered(_s) => assert!(true),
             _ => assert!(false, "Unexpected error type returned, {}", e.kind()),
         },
     }

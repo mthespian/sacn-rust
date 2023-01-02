@@ -1576,7 +1576,7 @@ mod test {
                 "Universe to ipv4 multicast allowed below minimum allowed universe"
             ),
             Err(e) => match e.kind() {
-                &ErrorKind::IllegalUniverse(ref _s) => assert!(true),
+                ErrorKind::IllegalUniverse(_s) => assert!(true),
                 _ => assert!(false, "Unexpected error type returned"),
             },
         }
@@ -1590,7 +1590,7 @@ mod test {
                 "Universe to ipv4 multicast allowed above maximum allowed universe"
             ),
             Err(e) => match e.kind() {
-                &ErrorKind::IllegalUniverse(ref _s) => assert!(true),
+                ErrorKind::IllegalUniverse(_s) => assert!(true),
                 _ => assert!(false, "Unexpected error type returned"),
             },
         }
@@ -1684,7 +1684,7 @@ mod test {
                 "Universe to ipv4 multicast allowed below minimum allowed universe"
             ),
             Err(e) => match e.kind() {
-                &ErrorKind::IllegalUniverse(ref _s) => assert!(true),
+                ErrorKind::IllegalUniverse(_s) => assert!(true),
                 _ => assert!(false, "Unexpected error type returned"),
             },
         }
@@ -1698,7 +1698,7 @@ mod test {
                 "Universe to ipv4 multicast allowed above maximum allowed universe"
             ),
             Err(e) => match e.kind() {
-                &ErrorKind::IllegalUniverse(ref _s) => assert!(true),
+                ErrorKind::IllegalUniverse(_s) => assert!(true),
                 _ => assert!(false, "Unexpected error type returned"),
             },
         }

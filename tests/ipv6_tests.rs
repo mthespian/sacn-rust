@@ -846,7 +846,7 @@ mod sacn_ipv6_multicast_test {
             match result {
                 Err(e) => {
                     match e.kind() {
-                        &ErrorKind::Io(ref s) => {
+                        ErrorKind::Io(s) => {
                             match s.kind() {
                                 std::io::ErrorKind::WouldBlock => {
                                     // Expected to timeout / would block.
@@ -937,7 +937,7 @@ mod sacn_ipv6_multicast_test {
             match result {
                 Err(e) => {
                     match e.kind() {
-                        &ErrorKind::Io(ref s) => {
+                        ErrorKind::Io(s) => {
                             match s.kind() {
                                 std::io::ErrorKind::WouldBlock => {
                                     // Expected to timeout / would block.
@@ -1034,7 +1034,7 @@ mod sacn_ipv6_multicast_test {
             match result {
                 Err(e) => {
                     match e.kind() {
-                        &ErrorKind::Io(ref s) => {
+                        ErrorKind::Io(s) => {
                             match s.kind() {
                                 std::io::ErrorKind::WouldBlock => {
                                     // Expected to timeout / would block.
