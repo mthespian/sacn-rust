@@ -110,7 +110,7 @@ mod sacn_ipv6_multicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !received_result.is_err(),
+            received_result.is_ok(),
             "Failed: Error when receiving data"
         );
 
@@ -185,7 +185,7 @@ mod sacn_ipv6_multicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !received_result.is_err(),
+            received_result.is_ok(),
             "Failed: Error when receiving data"
         );
 
@@ -253,7 +253,7 @@ mod sacn_ipv6_multicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !sync_pkt_res.is_err(),
+            sync_pkt_res.is_ok(),
             "Failed: Error when receiving packets"
         );
 
@@ -341,7 +341,7 @@ mod sacn_ipv6_multicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !sync_pkt_res.is_err(),
+            sync_pkt_res.is_ok(),
             "Failed: Error when receiving packets"
         );
 
@@ -429,7 +429,7 @@ mod sacn_ipv6_multicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !received_result.is_err(),
+            received_result.is_ok(),
             "Failed: Error when receiving data"
         );
 
@@ -505,7 +505,7 @@ mod sacn_ipv6_multicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !sync_pkt_res.is_err(),
+            sync_pkt_res.is_ok(),
             "Failed: Error when receiving packets"
         );
 
@@ -1127,11 +1127,11 @@ mod sacn_ipv6_multicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !received_result.is_err(),
+            received_result.is_ok(),
             "Failed: Error when receiving 1st universe of data"
         );
         assert!(
-            !received_result_2.is_err(),
+            received_result_2.is_ok(),
             "Failed: Error when receiving 2nd universe of data"
         );
 
@@ -1812,7 +1812,7 @@ mod sacn_ipv6_unicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !received_result.is_err(),
+            received_result.is_ok(),
             "Failed: Error when receiving data"
         );
 
@@ -1905,7 +1905,7 @@ mod sacn_ipv6_unicast_test {
         rcv_thread.join().unwrap();
 
         assert!(
-            !sync_pkt_res.is_err(),
+            sync_pkt_res.is_ok(),
             "Failed: Error when receiving packets"
         );
 

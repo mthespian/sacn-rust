@@ -259,7 +259,7 @@ fn test_send_single_universe_multiple_receivers_multicast_ipv4() {
     rcv_thread2.join().unwrap();
 
     assert!(
-        !received_result1.is_err(),
+        received_result1.is_ok(),
         "Failed: Error when receiving data"
     );
     let received_data1: Vec<DMXData> = received_result1.unwrap();
@@ -273,7 +273,7 @@ fn test_send_single_universe_multiple_receivers_multicast_ipv4() {
     );
 
     assert!(
-        !received_result2.is_err(),
+        received_result2.is_ok(),
         "Failed: Error when receiving data"
     );
     let received_data2: Vec<DMXData> = received_result2.unwrap();
@@ -460,7 +460,7 @@ fn test_send_recv_single_universe_unicast_ipv4() {
     rcv_thread.join().unwrap();
 
     assert!(
-        !received_result.is_err(),
+        received_result.is_ok(),
         "Failed: Error when receiving data"
     );
 
@@ -544,7 +544,7 @@ fn test_send_recv_single_universe_multicast_ipv4() {
 
     // Check that the receiver received the data without error.
     assert!(
-        !received_result.is_err(),
+        received_result.is_ok(),
         "Failed: Error when receiving data"
     );
 
@@ -705,7 +705,7 @@ fn test_send_recv_diff_priority_same_universe_multicast_ipv4() {
     rcv_thread.join().unwrap();
 
     assert!(
-        !received_result.is_err(),
+        received_result.is_ok(),
         "Failed: Error when receiving data"
     );
 
@@ -789,7 +789,7 @@ fn test_send_recv_two_packets_same_priority_same_universe_multicast_ipv4() {
     rcv_thread.join().unwrap();
 
     assert!(
-        !received_result.is_err(),
+        received_result.is_ok(),
         "Failed: Error when receiving data"
     );
 
@@ -880,7 +880,7 @@ fn test_send_recv_sync_then_nosync_packet_same_universe_multicast_ipv4() {
 
     // Check that the first lot of data received (which should be the second packet) is as expected.
     assert!(
-        !first_received_result.is_err(),
+        first_received_result.is_ok(),
         "Unexpected error when receiving first lot of data"
     );
     let received_data: Vec<DMXData> = first_received_result.unwrap();
@@ -971,11 +971,11 @@ fn test_send_recv_two_universe_multicast_ipv4() {
     rcv_thread.join().unwrap();
 
     assert!(
-        !received_result.is_err(),
+        received_result.is_ok(),
         "Failed: Error when receiving 1st universe of data"
     );
     assert!(
-        !received_result_2.is_err(),
+        received_result_2.is_ok(),
         "Failed: Error when receiving 2nd universe of data"
     );
 
@@ -1050,7 +1050,7 @@ fn test_send_recv_single_universe_alternative_startcode_multicast_ipv4() {
     rcv_thread.join().unwrap();
 
     assert!(
-        !received_result.is_err(),
+        received_result.is_ok(),
         "Failed: Error when receiving data"
     );
 
@@ -1122,7 +1122,7 @@ fn test_send_recv_across_universe_multicast_ipv4() {
     rcv_thread.join().unwrap();
 
     assert!(
-        !sync_pkt_res.is_err(),
+        sync_pkt_res.is_ok(),
         "Failed: Error when receiving packets"
     );
 
@@ -1213,7 +1213,7 @@ fn test_send_recv_across_universe_unicast_ipv4() {
     rcv_thread.join().unwrap();
 
     assert!(
-        !sync_pkt_res.is_err(),
+        sync_pkt_res.is_ok(),
         "Failed: Error when receiving packets"
     );
 

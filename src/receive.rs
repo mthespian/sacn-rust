@@ -583,7 +583,7 @@ impl SacnReceiver {
                         // To stop recv blocking forever with a non-None timeout due to packets being received consistently (that reset the timeout)
                         // within the receive timeout (e.g. universe discovery packets if the discovery interval < timeout) the timeout needs to be
                         // adjusted to account for the time already taken.
-                        if !timeout.is_none() {
+                        if timeout.is_some() {
                             let elapsed = start_time.elapsed();
                             match timeout.unwrap().checked_sub(elapsed) {
                                 None => {
@@ -608,7 +608,7 @@ impl SacnReceiver {
                         match s.kind() {
                             // Windows and Unix use different error types (WouldBlock/TimedOut) for the same error.
                             std::io::ErrorKind::WouldBlock | std::io::ErrorKind::TimedOut => {
-                                if !timeout.is_none() {
+                                if timeout.is_some() {
                                     let elapsed = start_time.elapsed();
                                     match timeout.unwrap().checked_sub(elapsed) {
                                         None => {
