@@ -2031,7 +2031,7 @@ fn check_timeouts(
                     break;
                 }
             }
-            if timedout_uni == None {
+            if timedout_uni.is_none() {
                 break;
             }
         }
@@ -2180,9 +2180,9 @@ pub fn htp_dmx_merge(i: &DMXData, n: &DMXData) -> Result<DMXData> {
     let mut n_val = n_iter.next();
 
     while (i_val.is_some()) || (n_val.is_some()) {
-        if i_val == None {
+        if i_val.is_none() {
             r.values.push(*n_val.unwrap());
-        } else if n_val == None {
+        } else if n_val.is_none() {
             r.values.push(*i_val.unwrap());
         } else {
             r.values.push(max(*n_val.unwrap(), *i_val.unwrap()));
