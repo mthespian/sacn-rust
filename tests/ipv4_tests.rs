@@ -4143,7 +4143,7 @@ fn generate_sync_packet_raw(cid: [u8; 16], sync_addr: u16, seq_num: u8) -> Vec<u
 /// The use of a UDP socket also shows that the protocol uses UDP at the transport layer.
 ///
 #[test]
-#[cfg_attr(rustfmt, rustfmt_skip)]
+#[rustfmt::skip]
 #[ignore]
 fn test_data_packet_transmit_format() {
     const CID: [u8; 16] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -4539,7 +4539,7 @@ fn test_sync_packet_transmit_seq_numbers() {
 /// This shows the source complies with ANSI E1.31-2018 Section 6.2.5 "E1.31 Data Packet: Sequence Number".
 ///
 #[test]
-#[cfg_attr(rustfmt, rustfmt_skip)]
+#[rustfmt::skip]
 #[ignore]
 fn test_track_data_packet_seq_numbers() {
     /* Packet parameters */
@@ -4611,7 +4611,7 @@ fn test_track_data_packet_seq_numbers() {
 /// This shows the source complies with ANSI E1.31-2018 Section 6.2.5 "E1.31 Data Packet: Sequence Number".
 ///
 #[test]
-#[cfg_attr(rustfmt, rustfmt_skip)]
+#[rustfmt::skip]
 #[ignore]
 fn test_track_sync_packet_seq_numbers() {
     // Source CID and name, set to arbitrary values as not the focus of the test.
@@ -4682,7 +4682,7 @@ fn test_track_sync_packet_seq_numbers() {
 /// ANSI E1.31-2018 Section 6.3.3.1.
 ///
 #[test]
-#[cfg_attr(rustfmt, rustfmt_skip)]
+#[rustfmt::skip]
 #[ignore]
 /// Linux only because of the mechanism used for creating the recv sockets so that they only receive from a single multicast address.
 /// This is unrelated to the actual library and is just the way the test is written.
