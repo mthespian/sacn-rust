@@ -1069,7 +1069,7 @@ impl Drop for SacnReceiver {
 /// name: The human readable name of the source to find.
 ///
 fn find_discovered_src(srcs: &[DiscoveredSacnSource], name: &String) -> Option<usize> {
-  for (i, src) in srcs.iter().enumerate() {
+    for (i, src) in srcs.iter().enumerate() {
         if src.name == *name {
             return Some(i);
         }

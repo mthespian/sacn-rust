@@ -436,9 +436,10 @@ fn handle_unicast_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result
             &[universe],
             &data,
             Some(priority),
-            Some(
-                SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT),
-            ),
+            Some(SocketAddr::new(
+                IpAddr::V4(dst_ip.parse().unwrap()),
+                ACN_SDT_MULTICAST_PORT,
+            )),
             None,
         )?;
     } else {
@@ -446,9 +447,10 @@ fn handle_unicast_option(src: &mut SacnSource, split_input: Vec<&str>) -> Result
             &[universe],
             &data,
             Some(priority),
-            Some(
-                SocketAddr::new(IpAddr::V4(dst_ip.parse().unwrap()), ACN_SDT_MULTICAST_PORT),
-            ),
+            Some(SocketAddr::new(
+                IpAddr::V4(dst_ip.parse().unwrap()),
+                ACN_SDT_MULTICAST_PORT,
+            )),
             Some(sync_uni),
         )?;
     }
@@ -644,7 +646,8 @@ fn run_test_moving_channel_preset(src: &mut SacnSource, universe: u16) -> Result
 
     while start_time.elapsed() < TEST_PRESET_DURATION {
         // Use a 0 startcode so skip first value.
-        #[allow(clippy::needless_range_loop)] for i in 1..data.len() {
+        #[allow(clippy::needless_range_loop)]
+        for i in 1..data.len() {
             let x: f64 = ((start_time.elapsed().as_millis() as f64)
                 + (i as f64) * MOVING_CHANNEL_TEST_WAVE_OFFSET)
                 / MOVING_CHANNEL_TEST_WAVE_PERIOD;
@@ -1164,10 +1167,7 @@ fn handle_input(src: &mut SacnSource) -> Result<bool> {
 
                     let universe: u16 = split_input[1].parse().unwrap();
                     let dst_ip = split_input[2];
-                    src.send_sync_packet(
-                        universe,
-                        Some(SocketAddr::from_str(dst_ip).unwrap()),
-                    )?;
+                    src.send_sync_packet(universe, Some(SocketAddr::from_str(dst_ip).unwrap()))?;
                     Ok(true)
                 }
                 ACTION_REGISTER_OPTION => {

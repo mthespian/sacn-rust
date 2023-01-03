@@ -445,24 +445,20 @@ fn test_send_recv_single_universe_unicast_ipv4() {
 
     let dst_ip: SocketAddr = SocketAddr::new(Ipv4Addr::LOCALHOST.into(), ACN_SDT_MULTICAST_PORT);
 
-    src
-        .send(
-            &[universe],
-            &TEST_DATA_SINGLE_UNIVERSE,
-            Some(priority),
-            Some(dst_ip),
-            None,
-        )
-        .unwrap();
+    src.send(
+        &[universe],
+        &TEST_DATA_SINGLE_UNIVERSE,
+        Some(priority),
+        Some(dst_ip),
+        None,
+    )
+    .unwrap();
 
     let received_result: Result<Vec<DMXData>> = rx.recv().unwrap();
 
     rcv_thread.join().unwrap();
 
-    assert!(
-        received_result.is_ok(),
-        "Failed: Error when receiving data"
-    );
+    assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
     let received_data: Vec<DMXData> = received_result.unwrap();
 
@@ -543,10 +539,7 @@ fn test_send_recv_single_universe_multicast_ipv4() {
     rcv_thread.join().unwrap();
 
     // Check that the receiver received the data without error.
-    assert!(
-        received_result.is_ok(),
-        "Failed: Error when receiving data"
-    );
+    assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
     // Check that the data received is as expected.
     let received_data: Vec<DMXData> = received_result.unwrap();
@@ -704,10 +697,7 @@ fn test_send_recv_diff_priority_same_universe_multicast_ipv4() {
 
     rcv_thread.join().unwrap();
 
-    assert!(
-        received_result.is_ok(),
-        "Failed: Error when receiving data"
-    );
+    assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
     let received_data: Vec<DMXData> = received_result.unwrap();
 
@@ -788,10 +778,7 @@ fn test_send_recv_two_packets_same_priority_same_universe_multicast_ipv4() {
 
     rcv_thread.join().unwrap();
 
-    assert!(
-        received_result.is_ok(),
-        "Failed: Error when receiving data"
-    );
+    assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
     let received_data: Vec<DMXData> = received_result.unwrap();
 
@@ -1049,10 +1036,7 @@ fn test_send_recv_single_universe_alternative_startcode_multicast_ipv4() {
 
     rcv_thread.join().unwrap();
 
-    assert!(
-        received_result.is_ok(),
-        "Failed: Error when receiving data"
-    );
+    assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
     let received_data: Vec<DMXData> = received_result.unwrap();
 
@@ -1121,10 +1105,7 @@ fn test_send_recv_across_universe_multicast_ipv4() {
 
     rcv_thread.join().unwrap();
 
-    assert!(
-        sync_pkt_res.is_ok(),
-        "Failed: Error when receiving packets"
-    );
+    assert!(sync_pkt_res.is_ok(), "Failed: Error when receiving packets");
 
     let mut received_data: Vec<DMXData> = sync_pkt_res.unwrap();
 
@@ -1190,21 +1171,24 @@ fn test_send_recv_across_universe_unicast_ipv4() {
 
     src.register_universes(&UNIVERSES).unwrap();
 
-    src
-        .send(
-            &UNIVERSES,
-            &TEST_DATA_MULTIPLE_UNIVERSE,
-            Some(priority),
-            Some(
-                SocketAddr::new(Ipv4Addr::new(127, 0, 0, 1).into(), ACN_SDT_MULTICAST_PORT),
-            ),
-            Some(UNIVERSES[0]),
-        )
-        .unwrap();
+    src.send(
+        &UNIVERSES,
+        &TEST_DATA_MULTIPLE_UNIVERSE,
+        Some(priority),
+        Some(SocketAddr::new(
+            Ipv4Addr::new(127, 0, 0, 1).into(),
+            ACN_SDT_MULTICAST_PORT,
+        )),
+        Some(UNIVERSES[0]),
+    )
+    .unwrap();
     sleep(Duration::from_millis(500)); // Small delay to allow the data packets to get through as per NSI-E1.31-2018 Appendix B.1 recommendation.
     src.send_sync_packet(
         UNIVERSES[0],
-        Some(SocketAddr::new(Ipv4Addr::new(127, 0, 0, 1).into(), ACN_SDT_MULTICAST_PORT)),
+        Some(SocketAddr::new(
+            Ipv4Addr::new(127, 0, 0, 1).into(),
+            ACN_SDT_MULTICAST_PORT,
+        )),
     )
     .unwrap();
 
@@ -1212,10 +1196,7 @@ fn test_send_recv_across_universe_unicast_ipv4() {
 
     rcv_thread.join().unwrap();
 
-    assert!(
-        sync_pkt_res.is_ok(),
-        "Failed: Error when receiving packets"
-    );
+    assert!(sync_pkt_res.is_ok(), "Failed: Error when receiving packets");
 
     let mut received_data: Vec<DMXData> = sync_pkt_res.unwrap();
 
@@ -1270,15 +1251,14 @@ fn test_two_senders_one_recv_different_universes_multicast_ipv4() {
 
         src.register_universe(universe_1).unwrap();
 
-        src
-            .send(
-                &[universe_1],
-                &TEST_DATA_SINGLE_UNIVERSE,
-                Some(priority),
-                None,
-                None,
-            )
-            .unwrap();
+        src.send(
+            &[universe_1],
+            &TEST_DATA_SINGLE_UNIVERSE,
+            Some(priority),
+            None,
+            None,
+        )
+        .unwrap();
     });
 
     let snd_thread_2 = thread::spawn(move || {
@@ -1292,15 +1272,14 @@ fn test_two_senders_one_recv_different_universes_multicast_ipv4() {
 
         src.register_universe(universe_2).unwrap();
 
-        src
-            .send(
-                &[universe_2],
-                &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
-                Some(priority),
-                None,
-                None,
-            )
-            .unwrap();
+        src.send(
+            &[universe_2],
+            &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
+            Some(priority),
+            None,
+            None,
+        )
+        .unwrap();
     });
 
     let res1: Vec<DMXData> = dmx_recv.recv(None).unwrap();
@@ -1346,15 +1325,14 @@ fn test_two_senders_one_recv_same_universe_no_sync_multicast_ipv4() {
 
         src.register_universe(universe).unwrap();
 
-        src
-            .send(
-                &[universe],
-                &TEST_DATA_SINGLE_UNIVERSE,
-                Some(priority),
-                None,
-                None,
-            )
-            .unwrap();
+        src.send(
+            &[universe],
+            &TEST_DATA_SINGLE_UNIVERSE,
+            Some(priority),
+            None,
+            None,
+        )
+        .unwrap();
     });
 
     let snd_thread_2 = thread::spawn(move || {
@@ -1368,15 +1346,14 @@ fn test_two_senders_one_recv_same_universe_no_sync_multicast_ipv4() {
 
         src.register_universe(universe).unwrap();
 
-        src
-            .send(
-                &[universe],
-                &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
-                Some(priority),
-                None,
-                None,
-            )
-            .unwrap();
+        src.send(
+            &[universe],
+            &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
+            Some(priority),
+            None,
+            None,
+        )
+        .unwrap();
     });
 
     let res1: Vec<DMXData> = dmx_recv.recv(None).unwrap();
@@ -2887,7 +2864,11 @@ fn test_preview_data_2_receiver_1_sender() {
         "Number of test network interface ips less than number of recv threads!"
     );
 
-    for (i, network_interface) in TEST_NETWORK_INTERFACE_IPV4.iter().enumerate().take(RCV_THREADS) {
+    for (i, network_interface) in TEST_NETWORK_INTERFACE_IPV4
+        .iter()
+        .enumerate()
+        .take(RCV_THREADS)
+    {
         let tx = rcv_tx.clone();
 
         rcv_threads.push(thread::spawn(move || {

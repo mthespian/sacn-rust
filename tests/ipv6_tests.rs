@@ -109,10 +109,7 @@ mod sacn_ipv6_multicast_test {
 
         rcv_thread.join().unwrap();
 
-        assert!(
-            received_result.is_ok(),
-            "Failed: Error when receiving data"
-        );
+        assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
         let received_data: Vec<DMXData> = received_result.unwrap();
 
@@ -184,10 +181,7 @@ mod sacn_ipv6_multicast_test {
 
         rcv_thread.join().unwrap();
 
-        assert!(
-            received_result.is_ok(),
-            "Failed: Error when receiving data"
-        );
+        assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
         let received_data: Vec<DMXData> = received_result.unwrap();
 
@@ -252,10 +246,7 @@ mod sacn_ipv6_multicast_test {
 
         rcv_thread.join().unwrap();
 
-        assert!(
-            sync_pkt_res.is_ok(),
-            "Failed: Error when receiving packets"
-        );
+        assert!(sync_pkt_res.is_ok(), "Failed: Error when receiving packets");
 
         let mut received_data: Vec<DMXData> = sync_pkt_res.unwrap();
 
@@ -340,10 +331,7 @@ mod sacn_ipv6_multicast_test {
 
         rcv_thread.join().unwrap();
 
-        assert!(
-            sync_pkt_res.is_ok(),
-            "Failed: Error when receiving packets"
-        );
+        assert!(sync_pkt_res.is_ok(), "Failed: Error when receiving packets");
 
         let mut received_data: Vec<DMXData> = sync_pkt_res.unwrap();
 
@@ -414,24 +402,20 @@ mod sacn_ipv6_multicast_test {
 
         src.register_universe(universe).unwrap();
 
-        src
-            .send(
-                &[universe],
-                &TEST_DATA_SINGLE_UNIVERSE,
-                Some(priority),
-                None,
-                None,
-            )
-            .unwrap();
+        src.send(
+            &[universe],
+            &TEST_DATA_SINGLE_UNIVERSE,
+            Some(priority),
+            None,
+            None,
+        )
+        .unwrap();
 
         let received_result: Result<Vec<DMXData>> = rx.recv().unwrap();
 
         rcv_thread.join().unwrap();
 
-        assert!(
-            received_result.is_ok(),
-            "Failed: Error when receiving data"
-        );
+        assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
         let received_data: Vec<DMXData> = received_result.unwrap();
 
@@ -504,10 +488,7 @@ mod sacn_ipv6_multicast_test {
 
         rcv_thread.join().unwrap();
 
-        assert!(
-            sync_pkt_res.is_ok(),
-            "Failed: Error when receiving packets"
-        );
+        assert!(sync_pkt_res.is_ok(), "Failed: Error when receiving packets");
 
         let mut received_data: Vec<DMXData> = sync_pkt_res.unwrap();
 
@@ -1178,15 +1159,14 @@ mod sacn_ipv6_multicast_test {
 
             src.register_universe(universe).unwrap();
 
-            src
-                .send(
-                    &[universe],
-                    &TEST_DATA_SINGLE_UNIVERSE,
-                    Some(priority),
-                    None,
-                    None,
-                )
-                .unwrap();
+            src.send(
+                &[universe],
+                &TEST_DATA_SINGLE_UNIVERSE,
+                Some(priority),
+                None,
+                None,
+            )
+            .unwrap();
         });
 
         let snd_thread_2 = thread::spawn(move || {
@@ -1200,15 +1180,14 @@ mod sacn_ipv6_multicast_test {
 
             src.register_universe(universe).unwrap();
 
-            src
-                .send(
-                    &[universe],
-                    &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
-                    Some(priority),
-                    None,
-                    None,
-                )
-                .unwrap();
+            src.send(
+                &[universe],
+                &TEST_DATA_PARTIAL_CAPACITY_UNIVERSE,
+                Some(priority),
+                None,
+                None,
+            )
+            .unwrap();
         });
 
         let res1: Vec<DMXData> = dmx_recv.recv(None).unwrap();
@@ -1797,24 +1776,20 @@ mod sacn_ipv6_unicast_test {
             ACN_SDT_MULTICAST_PORT,
         );
 
-        src
-            .send(
-                &[universe],
-                &TEST_DATA_SINGLE_UNIVERSE,
-                Some(priority),
-                Some(dst_ip),
-                None,
-            )
-            .unwrap();
+        src.send(
+            &[universe],
+            &TEST_DATA_SINGLE_UNIVERSE,
+            Some(priority),
+            Some(dst_ip),
+            None,
+        )
+        .unwrap();
 
         let received_result: Result<Vec<DMXData>> = rx.recv().unwrap();
 
         rcv_thread.join().unwrap();
 
-        assert!(
-            received_result.is_ok(),
-            "Failed: Error when receiving data"
-        );
+        assert!(received_result.is_ok(), "Failed: Error when receiving data");
 
         let received_data: Vec<DMXData> = received_result.unwrap();
 
@@ -1872,29 +1847,24 @@ mod sacn_ipv6_unicast_test {
 
         src.register_universes(&UNIVERSES).unwrap();
 
-        src
-            .send(
-                &UNIVERSES,
-                &TEST_DATA_MULTIPLE_UNIVERSE,
-                Some(priority),
-                Some(
-                    SocketAddr::new(
-                        IpAddr::V6(TEST_NETWORK_INTERFACE_IPV6[0].parse().unwrap()),
-                        ACN_SDT_MULTICAST_PORT,
-                    ),
-                ),
-                Some(UNIVERSES[0]),
-            )
-            .unwrap();
+        src.send(
+            &UNIVERSES,
+            &TEST_DATA_MULTIPLE_UNIVERSE,
+            Some(priority),
+            Some(SocketAddr::new(
+                IpAddr::V6(TEST_NETWORK_INTERFACE_IPV6[0].parse().unwrap()),
+                ACN_SDT_MULTICAST_PORT,
+            )),
+            Some(UNIVERSES[0]),
+        )
+        .unwrap();
         sleep(Duration::from_millis(500)); // Small delay to allow the data packets to get through as per NSI-E1.31-2018 Appendix B.1 recommendation.
         src.send_sync_packet(
             UNIVERSES[0],
-            Some(
-                SocketAddr::new(
-                    IpAddr::V6(TEST_NETWORK_INTERFACE_IPV6[0].parse().unwrap()),
-                    ACN_SDT_MULTICAST_PORT,
-                ),
-            ),
+            Some(SocketAddr::new(
+                IpAddr::V6(TEST_NETWORK_INTERFACE_IPV6[0].parse().unwrap()),
+                ACN_SDT_MULTICAST_PORT,
+            )),
         )
         .unwrap();
 
@@ -1902,10 +1872,7 @@ mod sacn_ipv6_unicast_test {
 
         rcv_thread.join().unwrap();
 
-        assert!(
-            sync_pkt_res.is_ok(),
-            "Failed: Error when receiving packets"
-        );
+        assert!(sync_pkt_res.is_ok(), "Failed: Error when receiving packets");
 
         let mut received_data: Vec<DMXData> = sync_pkt_res.unwrap();
 
